@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The 7 Paradox: Higher Spread = More 7s</title>
+    <script src="https://cdn.plot.ly/plotly-2.27.0.min.js"></script>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #fee9e2;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(93, 33, 55, 0.1);
+        }
+        h1 {
+            color: #5d2137;
+            font-size: 28px;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+        .subtitle {
+            color: #ba684e;
+            font-size: 16px;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        #chart {
+            width: 100%;
+            height: 600px;
+        }
+        .footer {
+            text-align: center;
+            color: #666;
+            font-size: 12px;
+            margin-top: 20px;
+        }
+        .insight-box {
+            background-color: #fee9e2;
+            border-left: 4px solid #5d2137;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+        .insight-box h3 {
+            color: #5d2137;
+            margin-top: 0;
+            font-size: 18px;
+        }
+        .insight-box p {
+            color: #333;
+            line-height: 1.6;
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>THE 7 PARADOX: Higher Spread = More 7s</h1>
+        <p class="subtitle">Subjects with more spread out grades give MORE opportunity for 7s</p>
+        
+        <div id="chart"></div>
+        
+        <div class="insight-box">
+            <h3>💡 Key Insight</h3>
+            <p>Subjects with wider grade spreads (higher standard deviation) have <strong>significantly more students achieving grade 7s</strong>. 
+            This creates a paradox: the "unpredictable" subjects actually offer MORE opportunity for top grades, even though they also have more risk of low grades.</p>
+        </div>
+        
+        <div class="footer">
+            Fenwick Tutoring | Data: IB May 2025 Statistical Bulletin | Hover over points for details
+        </div>
+    </div>
+
+    <script>
+        // Load and process the data using relative path
+        fetch('./ib_subject_analysis_clean.csv')
+            .then(response => response.text())
+            .then(csvData => {
+                const rows = csvData.trim().split('\n');
+                const headers = rows[0].split(',');
+                
+                // Parse CSV data
+                const data = rows.slice(1).map(row => {
+                    const values = row.split(',');
+                    return {
+                        subject: values[0],
+                        level: values[1],
+                        group: values[2],
+                        students: parseInt(values[3]),
+                        meanGrade: parseFloat(values[4]),
+                        stdDev: parseFloat(values[5]),
+                        pctGrade7: parseFloat(values[12])
+                    };
+                });
+                
+                // Define colors for subject groups
+                const colorMap = {
+                    'Language Acquisition': '#4CAF50',
+                    'Individuals and Societies': '#2196F3',
+                    'Language and Literature': '#9C27B0',
+                    'Sciences': '#F44336',
+                    'Mathematics': '#FF9800',
+                    'The Arts': '#E91E63',
+                    'Interdisciplinary': '#607D8B'
+                };
+                
+                // Group data by subject group
+                const groups = [...new Set(data.map(d => d.group))];
+                
+                const traces = groups.map(group => {
+                    const groupData = data.filter(d => d.group === group);
+                    
+                    return {
+                        x: groupData.map(d => d.stdDev),
+                        y: groupData.map(d => d.pctGrade7),
+                        mode: 'markers',
+                        type: 'scatter',
+                        name: group,
+                        marker: {
+                            size: groupData.map(d => Math.sqrt(d.students) / 15),
+                            color: colorMap[group],
+                            opacity: 0.7,
+                            line: {
+                                color: 'white',
+                                width: 1
+                            }
+                        },
+                        text: groupData.map(d => 
+                            `<b>${d.subject} ${d.level}</b><br>` +
+                            `Grade 7: ${d.pctGrade7.toFixed(1)}%<br>` +
+                            `Std Dev: ${d.stdDev.toFixed(2)}<br>` +
+                            `Mean Grade: ${d.meanGrade.toFixed(1)}<br>` +
+                            `Students: ${d.students.toLocaleString()}`
+                        ),
+                        hovertemplate: '%{text}<extra></extra>'
+                    };
+                });
+                
+                // Add trend line
+                const x = data.map(d => d.stdDev);
+                const y = data.map(d => d.pctGrade7);
+                
+                // Calculate simple linear regression
+                const n = x.length;
+                const sumX = x.reduce((a, b) => a + b, 0);
+                const sumY = y.reduce((a, b) => a + b, 0);
+                const sumXY = x.reduce((sum, xi, i) => sum + xi * y[i], 0);
+                const sumX2 = x.reduce((sum, xi) => sum + xi * xi, 0);
+                
+                const slope = (n * sumXY - sumX * sumY) / (n * sumX2 - sumX * sumX);
+                const intercept = (sumY - slope * sumX) / n;
+                
+                const minX = Math.min(...x);
+                const maxX = Math.max(...x);
+                const trendY = [minX, maxX].map(xi => slope * xi + intercept);
+                
+                // Calculate correlation coefficient
+                const meanX = sumX / n;
+                const meanY = sumY / n;
+                const ssX = x.reduce((sum, xi) => sum + Math.pow(xi - meanX, 2), 0);
+                const ssY = y.reduce((sum, yi) => sum + Math.pow(yi - meanY, 2), 0);
+                const ssXY = x.reduce((sum, xi, i) => sum + (xi - meanX) * (y[i] - meanY), 0);
+                const r = ssXY / Math.sqrt(ssX * ssY);
+                
+                traces.push({
+                    x: [minX, maxX],
+                    y: trendY,
+                    mode: 'lines',
+                    name: `Trend (r = ${r.toFixed(3)})`,
+                    line: {
+                        color: '#5d2137',
+                        width: 3,
+                        dash: 'dash'
+                    },
+                    hovertemplate: 'Positive correlation<br>r = ' + r.toFixed(3) + '<extra></extra>'
+                });
+                
+                const layout = {
+                    xaxis: {
+                        title: {
+                            text: 'Grade Spread (Standard Deviation)',
+                            font: { size: 14, color: '#5d2137' }
+                        },
+                        gridcolor: '#f0f0f0',
+                        range: [0.8, 1.6]
+                    },
+                    yaxis: {
+                        title: {
+                            text: '% Students Getting Grade 7',
+                            font: { size: 14, color: '#5d2137' }
+                        },
+                        gridcolor: '#f0f0f0',
+                        range: [0, 30]
+                    },
+                    hovermode: 'closest',
+                    showlegend: true,
+                    legend: {
+                        x: 0.02,
+                        y: 0.98,
+                        bgcolor: 'rgba(255, 255, 255, 0.8)',
+                        bordercolor: '#5d2137',
+                        borderwidth: 1
+                    },
+                    plot_bgcolor: 'white',
+                    paper_bgcolor: 'white',
+                    font: {
+                        family: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, sans-serif'
+                    },
+                    margin: { t: 20, r: 20, b: 60, l: 70 },
+                    annotations: [{
+                        x: 1.4,
+                        y: 21,
+                        text: 'Subjects with more spread<br>give MORE opportunity for 7s!',
+                        showarrow: true,
+                        arrowhead: 2,
+                        arrowsize: 1,
+                        arrowwidth: 2,
+                        arrowcolor: '#5d2137',
+                        ax: -80,
+                        ay: -50,
+                        font: {
+                            size: 13,
+                            color: '#5d2137',
+                            family: 'Arial'
+                        },
+                        bgcolor: '#fee9e2',
+                        bordercolor: '#5d2137',
+                        borderwidth: 2,
+                        borderpad: 6
+                    }]
+                };
+                
+                const config = {
+                    responsive: true,
+                    displayModeBar: true,
+                    modeBarButtonsToRemove: ['lasso2d', 'select2d'],
+                    displaylogo: false
+                };
+                
+                Plotly.newPlot('chart', traces, layout, config);
+            })
+            .catch(error => {
+                console.error('Error loading data:', error);
+                document.getElementById('chart').innerHTML = 
+                    '<p style="text-align: center; color: #ba684e; padding: 100px;">Error loading chart data. Please ensure the CSV file is in the same directory.</p>';
+            });
+    </script>
+</body>
+</html>

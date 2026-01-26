@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RISK-REWARD QUADRANT: Where Does Your Subject Sit?</title>
+    <script src="https://cdn.plot.ly/plotly-2.27.0.min.js"></script>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #fee9e2;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(93, 33, 55, 0.1);
+        }
+        h1 {
+            color: #5d2137;
+            font-size: 28px;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+        .subtitle {
+            color: #ba684e;
+            font-size: 16px;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        #chart {
+            width: 100%;
+            height: 700px;
+        }
+        .footer {
+            text-align: center;
+            color: #666;
+            font-size: 12px;
+            margin-top: 20px;
+        }
+        .legend-box {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+        .legend-item {
+            padding: 15px;
+            border-radius: 6px;
+            border: 2px solid;
+        }
+        .low-risk-high-reward {
+            background-color: #d4edda;
+            border-color: #28a745;
+        }
+        .high-risk-high-reward {
+            background-color: #fff3cd;
+            border-color: #ffc107;
+        }
+        .low-risk-low-reward {
+            background-color: #d1ecf1;
+            border-color: #17a2b8;
+        }
+        .high-risk-low-reward {
+            background-color: #f8d7da;
+            border-color: #dc3545;
+        }
+        .legend-item h3 {
+            margin: 0 0 5px 0;
+            font-size: 16px;
+        }
+        .legend-item p {
+            margin: 0;
+            font-size: 13px;
+            color: #333;
+        }
+        .stats {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            margin: 20px 0;
+            padding: 20px;
+            background-color: #fee9e2;
+            border-radius: 8px;
+        }
+        .stat-item {
+            text-align: center;
+            padding: 10px;
+        }
+        .stat-number {
+            font-size: 32px;
+            font-weight: bold;
+            color: #5d2137;
+        }
+        .stat-label {
+            font-size: 14px;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>RISK-REWARD QUADRANT: Where Does Your Subject Sit?</h1>
+        <p class="subtitle">Only 6.9% of IB subjects offer both low risk and high reward</p>
+        
+        <div id="chart"></div>
+        
+        <div class="stats">
+            <div class="stat-item">
+                <div class="stat-number">4</div>
+                <div class="stat-label">Low Risk, High Reward</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">8</div>
+                <div class="stat-label">High Risk, High Reward</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">7</div>
+                <div class="stat-label">Low Risk, Low Reward</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">39</div>
+                <div class="stat-label">High Risk, Low Reward</div>
+            </div>
+        </div>
+        
+        <div class="legend-box">
+            <div class="legend-item low-risk-high-reward">
+                <h3>🟢 LOW RISK, HIGH REWARD</h3>
+                <p>The golden zone! Safe grades with good chances of getting 7s.</p>
+            </div>
+            <div class="legend-item high-risk-high-reward">
+                <h3>🟡 HIGH RISK, HIGH REWARD</h3>
+                <p>The gamble. High chance of 7s but also risk of low grades.</p>
+            </div>
+            <div class="legend-item low-risk-low-reward">
+                <h3>🔵 LOW RISK, LOW REWARD</h3>
+                <p>Safe but limited. You'll avoid disasters but 7s are rare.</p>
+            </div>
+            <div class="legend-item high-risk-low-reward">
+                <h3>🔴 HIGH RISK, LOW REWARD</h3>
+                <p>Danger zone! High risk without compensating rewards.</p>
+            </div>
+        </div>
+        
+        <div class="footer">
+            Fenwick Tutoring | Data: IB May 2025 Statistical Bulletin | Click and drag to zoom | Hover for details
+        </div>
+    </div>
+
+    <script>
+        // Load and process the data using relative path
+        fetch('./ib_risk_reward_analysis.csv')
+            .then(response => response.text())
+            .then(csvData => {
+                const rows = csvData.trim().split('\n');
+                
+                // Parse CSV data handling quoted fields
+                function parseCSVRow(row) {
+                    const result = [];
+                    let current = '';
+                    let inQuotes = false;
+                    
+                    for (let i = 0; i < row.length; i++) {
+                        const char = row[i];
+                        if (char === '"') {
+                            inQuotes = !inQuotes;
+                        } else if (char === ',' && !inQuotes) {
+                            result.push(current.trim());
+                            current = '';
+                        } else {
+                            current += char;
+                        }
+                    }
+                    result.push(current.trim());
+                    return result;
+                }
+                
+                const data = rows.slice(1).map(row => {
+                    const values = parseCSVRow(row);
+                    return {
+                        subject: values[0],
+                        level: values[1],
+                        group: values[2],
+                        students: parseInt(values[3]),
+                        meanGrade: parseFloat(values[4]),
+                        stdDev: parseFloat(values[5]),
+                        pctGrade7: parseFloat(values[6]),
+                        pctGrade67: parseFloat(values[7]),
+                        pctGrade13: parseFloat(values[8]),
+                        riskScore: parseFloat(values[9]),
+                        rewardScore: parseFloat(values[10]),
+                        category: values[11]
+                    };
+                });
+                
+                // Define colors for categories
+                const categoryColors = {
+                    'LOW RISK, HIGH REWARD': '#28a745',
+                    'HIGH RISK, HIGH REWARD': '#ffc107',
+                    'LOW RISK, LOW REWARD': '#17a2b8',
+                    'HIGH RISK, LOW REWARD': '#dc3545'
+                };
+                
+                const categoryOrder = [
+                    'LOW RISK, HIGH REWARD',
+                    'HIGH RISK, HIGH REWARD',
+                    'LOW RISK, LOW REWARD',
+                    'HIGH RISK, LOW REWARD'
+                ];
+                
+                // Create traces for each category
+                const traces = categoryOrder.map(category => {
+                    const categoryData = data.filter(d => d.category === category);
+                    
+                    return {
+                        x: categoryData.map(d => d.riskScore),
+                        y: categoryData.map(d => d.rewardScore),
+                        mode: 'markers',
+                        type: 'scatter',
+                        name: category,
+                        marker: {
+                            size: 10,
+                            color: categoryColors[category],
+                            opacity: 0.7,
+                            line: {
+                                color: 'white',
+                                width: 1.5
+                            }
+                        },
+                        text: categoryData.map(d => 
+                            `<b>${d.subject} ${d.level}</b><br>` +
+                            `Risk Score: ${d.riskScore.toFixed(1)}<br>` +
+                            `Reward Score: ${d.rewardScore.toFixed(1)}<br>` +
+                            `Grade 7: ${d.pctGrade7.toFixed(1)}%<br>` +
+                            `Grade 6-7: ${d.pctGrade67.toFixed(1)}%<br>` +
+                            `Grade 1-3: ${d.pctGrade13.toFixed(1)}%<br>` +
+                            `Mean Grade: ${d.meanGrade.toFixed(1)}<br>` +
+                            `Students: ${d.students.toLocaleString()}`
+                        ),
+                        hovertemplate: '%{text}<extra></extra>'
+                    };
+                });
+                
+                // Add labels for notable subjects
+                const labelSubjects = [
+                    'English B HL',
+                    'Physics HL',
+                    'Math Applications SL',
+                    'Economics HL',
+                    'Geography HL'
+                ];
+                
+                const annotations = data
+                    .filter(d => labelSubjects.some(ls => `${d.subject} ${d.level}` === ls))
+                    .map(d => ({
+                        x: d.riskScore,
+                        y: d.rewardScore,
+                        text: `${d.subject} ${d.level}`,
+                        showarrow: false,
+                        font: {
+                            size: 10,
+                            color: '#5d2137',
+                            family: 'Arial'
+                        },
+                        bgcolor: 'rgba(255, 255, 255, 0.8)',
+                        bordercolor: '#5d2137',
+                        borderwidth: 1,
+                        borderpad: 3,
+                        xshift: 0,
+                        yshift: 12
+                    }));
+                
+                const layout = {
+                    xaxis: {
+                        title: {
+                            text: 'Risk Score (0-100) →',
+                            font: { size: 14, color: '#5d2137' }
+                        },
+                        gridcolor: '#e0e0e0',
+                        range: [0, 100],
+                        zeroline: false
+                    },
+                    yaxis: {
+                        title: {
+                            text: 'Reward Score (0-100) ↑',
+                            font: { size: 14, color: '#5d2137' }
+                        },
+                        gridcolor: '#e0e0e0',
+                        range: [0, 100],
+                        zeroline: false
+                    },
+                    hovermode: 'closest',
+                    showlegend: true,
+                    legend: {
+                        x: 0.02,
+                        y: 0.98,
+                        bgcolor: 'rgba(255, 255, 255, 0.9)',
+                        bordercolor: '#5d2137',
+                        borderwidth: 1,
+                        font: { size: 11 }
+                    },
+                    plot_bgcolor: 'white',
+                    paper_bgcolor: 'white',
+                    font: {
+                        family: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, sans-serif'
+                    },
+                    margin: { t: 20, r: 20, b: 70, l: 80 },
+                    shapes: [
+                        // Vertical line at x=40 (risk threshold)
+                        {
+                            type: 'line',
+                            x0: 40,
+                            y0: 0,
+                            x1: 40,
+                            y1: 100,
+                            line: {
+                                color: '#5d2137',
+                                width: 2,
+                                dash: 'dot'
+                            }
+                        },
+                        // Horizontal line at y=50 (reward threshold)
+                        {
+                            type: 'line',
+                            x0: 0,
+                            y0: 50,
+                            x1: 100,
+                            y1: 50,
+                            line: {
+                                color: '#5d2137',
+                                width: 2,
+                                dash: 'dot'
+                            }
+                        }
+                    ],
+                    annotations: [
+                        // Quadrant labels
+                        {
+                            x: 20,
+                            y: 75,
+                            text: '<b>LOW RISK<br>HIGH REWARD</b><br>(4 subjects, 6.9%)',
+                            showarrow: false,
+                            font: { size: 12, color: '#28a745' },
+                            bgcolor: 'rgba(212, 237, 218, 0.3)',
+                            bordercolor: '#28a745',
+                            borderwidth: 2,
+                            borderpad: 8
+                        },
+                        {
+                            x: 70,
+                            y: 75,
+                            text: '<b>HIGH RISK<br>HIGH REWARD</b><br>(8 subjects, 13.8%)',
+                            showarrow: false,
+                            font: { size: 12, color: '#856404' },
+                            bgcolor: 'rgba(255, 243, 205, 0.3)',
+                            bordercolor: '#ffc107',
+                            borderwidth: 2,
+                            borderpad: 8
+                        },
+                        {
+                            x: 20,
+                            y: 25,
+                            text: '<b>LOW RISK<br>LOW REWARD</b><br>(7 subjects, 12.1%)',
+                            showarrow: false,
+                            font: { size: 12, color: '#0c5460' },
+                            bgcolor: 'rgba(209, 236, 241, 0.3)',
+                            bordercolor: '#17a2b8',
+                            borderwidth: 2,
+                            borderpad: 8
+                        },
+                        {
+                            x: 70,
+                            y: 25,
+                            text: '<b>DANGER ZONE</b><br>(39 subjects, 67.2%)',
+                            showarrow: false,
+                            font: { size: 12, color: '#721c24' },
+                            bgcolor: 'rgba(248, 215, 218, 0.3)',
+                            bordercolor: '#dc3545',
+                            borderwidth: 2,
+                            borderpad: 8
+                        },
+                        ...annotations
+                    ]
+                };
+                
+                const config = {
+                    responsive: true,
+                    displayModeBar: true,
+                    modeBarButtonsToRemove: ['lasso2d', 'select2d'],
+                    displaylogo: false
+                };
+                
+                Plotly.newPlot('chart', traces, layout, config);
+            })
+            .catch(error => {
+                console.error('Error loading data:', error);
+                document.getElementById('chart').innerHTML = 
+                    '<p style="text-align: center; color: #ba684e; padding: 100px;">Error loading chart data. Please ensure the CSV file is in the same directory.</p>';
+            });
+    </script>
+</body>
+</html>

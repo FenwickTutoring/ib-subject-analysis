@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IB Subject Analysis - Interactive Charts</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            margin: 0;
+            padding: 40px 20px;
+            background-color: #fee9e2;
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(93, 33, 55, 0.1);
+        }
+        h1 {
+            color: #5d2137;
+            font-size: 36px;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+        .subtitle {
+            color: #ba684e;
+            font-size: 18px;
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        .chart-links {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+        .chart-card {
+            background-color: #fee9e2;
+            border: 2px solid #5d2137;
+            border-radius: 8px;
+            padding: 30px;
+            text-align: center;
+            text-decoration: none;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .chart-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(93, 33, 55, 0.2);
+        }
+        .chart-card h2 {
+            color: #5d2137;
+            font-size: 24px;
+            margin: 0 0 15px 0;
+        }
+        .chart-card p {
+            color: #333;
+            font-size: 16px;
+            line-height: 1.5;
+            margin: 0;
+        }
+        .footer {
+            text-align: center;
+            color: #666;
+            font-size: 14px;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid #ddd;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>IB Subject Analysis</h1>
+        <p class="subtitle">Interactive Data Visualizations by Fenwick Tutoring</p>
+        
+        <div class="chart-links">
+            <a href="chart1_7_paradox.html" class="chart-card">
+                <h2>📊 The 7 Paradox</h2>
+                <p>Discover why subjects with more spread out grades actually give MORE opportunity for 7s</p>
+            </a>
+            
+            <a href="chart2_risk_reward_quadrant.html" class="chart-card">
+                <h2>🎯 Risk-Reward Quadrant</h2>
+                <p>See where your subjects sit in the risk-reward matrix</p>
+            </a>
+        </div>
+        
+        <div class="footer">
+            <p><strong>Fenwick Tutoring</strong></p>
+            <p>Data: IB May 2025 Statistical Bulletin</p>
+            <p>Analysis: 202,102 students across 58 IB subjects</p>
+        </div>
+    </div>
+</body>
+</html>
