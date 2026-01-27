@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Risk-Reward Quadrant | Fenwick Tutoring</title>
+    <title>The 7 Paradox | Fenwick Tutoring</title>
     <script src="https://cdn.plot.ly/plotly-2.27.0.min.js"></script>
     <style>
         * {
@@ -42,7 +42,7 @@
         
         #chart {
             width: 100%;
-            height: 550px;
+            height: 500px;
             margin: 30px 0;
             overflow: visible;
         }
@@ -62,21 +62,21 @@
             }
             
             #chart {
-                height: 400px;
+                height: 350px;
             }
         }
         
         @media (min-width: 1200px) {
             #chart {
-                height: 600px;
+                height: 550px;
             }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>Risk-Reward Quadrant: Where Does Your Subject Sit?</h1>
-        <p class="subtitle">Only 6.9% of IB subjects offer both low risk and high reward</p>
+        <h1>The 7 Paradox: Higher Spread = More 7s</h1>
+        <p class="subtitle">Subjects with more spread out grades give MORE opportunity for 7s</p>
         
         <div id="chart"></div>
         
@@ -90,34 +90,15 @@
         const isMobile = window.innerWidth < 768;
         
         // Load and process the data using relative path
-        fetch('./ib_risk_reward_analysis.csv')
+        fetch('./ib_subject_analysis_clean.csv')
             .then(response => response.text())
             .then(csvData => {
                 const rows = csvData.trim().split('\n');
+                const headers = rows[0].split(',');
                 
-                // Parse CSV data handling quoted fields
-                function parseCSVRow(row) {
-                    const result = [];
-                    let current = '';
-                    let inQuotes = false;
-                    
-                    for (let i = 0; i < row.length; i++) {
-                        const char = row[i];
-                        if (char === '"') {
-                            inQuotes = !inQuotes;
-                        } else if (char === ',' && !inQuotes) {
-                            result.push(current.trim());
-                            current = '';
-                        } else {
-                            current += char;
-                        }
-                    }
-                    result.push(current.trim());
-                    return result;
-                }
-                
+                // Parse CSV data
                 const data = rows.slice(1).map(row => {
-                    const values = parseCSVRow(row);
+                    const values = row.split(',');
                     return {
                         subject: values[0],
                         level: values[1],
@@ -125,58 +106,48 @@
                         students: parseInt(values[3]),
                         meanGrade: parseFloat(values[4]),
                         stdDev: parseFloat(values[5]),
-                        pctGrade7: parseFloat(values[6]),
-                        pctGrade67: parseFloat(values[7]),
-                        pctGrade13: parseFloat(values[8]),
-                        riskScore: parseFloat(values[9]),
-                        rewardScore: parseFloat(values[10]),
-                        category: values[11]
+                        pctGrade7: parseFloat(values[12])
                     };
                 });
                 
-                // Define colors for categories using brand colors
-                const categoryColors = {
-                    'LOW RISK, HIGH REWARD': '#5d2137',
-                    'HIGH RISK, HIGH REWARD': '#ba684e',
-                    'LOW RISK, LOW REWARD': '#999999',
-                    'HIGH RISK, LOW REWARD': '#000000'
+                // Define colors for subject groups using distinct, easily distinguishable colors
+                const colorMap = {
+                    'Language Acquisition': '#2196F3',      // Blue
+                    'Individuals and Societies': '#4CAF50', // Green
+                    'Language and Literature': '#9C27B0',   // Purple
+                    'Sciences': '#F44336',                  // Red
+                    'Mathematics': '#FF9800',               // Orange
+                    'The Arts': '#E91E63',                  // Pink
+                    'Interdisciplinary': '#607D8B'          // Blue Grey
                 };
                 
-                const categoryOrder = [
-                    'LOW RISK, HIGH REWARD',
-                    'HIGH RISK, HIGH REWARD',
-                    'LOW RISK, LOW REWARD',
-                    'HIGH RISK, LOW REWARD'
-                ];
+                // Group data by subject group
+                const groups = [...new Set(data.map(d => d.group))];
                 
-                // Create traces for each category
-                const traces = categoryOrder.map(category => {
-                    const categoryData = data.filter(d => d.category === category);
+                const traces = groups.map(group => {
+                    const groupData = data.filter(d => d.group === group);
                     
                     return {
-                        x: categoryData.map(d => d.riskScore),
-                        y: categoryData.map(d => d.rewardScore),
+                        x: groupData.map(d => d.stdDev),
+                        y: groupData.map(d => d.pctGrade7),
                         mode: 'markers',
                         type: 'scatter',
-                        name: category,
+                        name: group,
                         marker: {
-                            size: isMobile ? 8 : 10,
-                            color: categoryColors[category],
+                            size: isMobile ? 8 : groupData.map(d => Math.sqrt(d.students) / 15),
+                            color: colorMap[group],
                             opacity: 0.7,
                             line: {
-                                color: 'white',
-                                width: 1.5
+                                color: '#5d2137',
+                                width: 1
                             }
                         },
-                        text: categoryData.map(d => 
-                            isMobile
-                            ? `<b>${d.subject} ${d.level}</b><br>Risk: ${d.riskScore.toFixed(1)}<br>Reward: ${d.rewardScore.toFixed(1)}`
+                        text: groupData.map(d => 
+                            isMobile 
+                            ? `<b>${d.subject} ${d.level}</b><br>Grade 7: ${d.pctGrade7.toFixed(1)}%<br>Std Dev: ${d.stdDev.toFixed(2)}`
                             : `<b>${d.subject} ${d.level}</b><br>` +
-                              `Risk Score: ${d.riskScore.toFixed(1)}<br>` +
-                              `Reward Score: ${d.rewardScore.toFixed(1)}<br>` +
                               `Grade 7: ${d.pctGrade7.toFixed(1)}%<br>` +
-                              `Grade 6-7: ${d.pctGrade67.toFixed(1)}%<br>` +
-                              `Grade 1-3: ${d.pctGrade13.toFixed(1)}%<br>` +
+                              `Std Dev: ${d.stdDev.toFixed(2)}<br>` +
                               `Mean Grade: ${d.meanGrade.toFixed(1)}<br>` +
                               `Students: ${d.students.toLocaleString()}`
                         ),
@@ -189,117 +160,49 @@
                     };
                 });
                 
-                // Add labels for notable subjects - hide on mobile
-                const labelSubjects = isMobile ? [] : [
-                    'Physics HL',
-                    'Math Applications SL',
-                ];
+                // Add trend line
+                const x = data.map(d => d.stdDev);
+                const y = data.map(d => d.pctGrade7);
                 
-                const annotations = data
-                    .filter(d => labelSubjects.some(ls => `${d.subject} ${d.level}` === ls))
-                    .map(d => ({
-                        x: d.riskScore,
-                        y: d.rewardScore,
-                        text: `${d.subject} ${d.level}`,
-                        showarrow: false,
-                        font: {
-                            size: 10,
-                            color: '#5d2137'
-                        },
-                        bgcolor: 'rgba(255, 255, 255, 0.8)',
-                        bordercolor: '#5d2137',
-                        borderwidth: 1,
-                        borderpad: 3,
-                        xshift: 0,
-                        yshift: 12
-                    }));
+                // Calculate simple linear regression
+                const n = x.length;
+                const sumX = x.reduce((a, b) => a + b, 0);
+                const sumY = y.reduce((a, b) => a + b, 0);
+                const sumXY = x.reduce((sum, xi, i) => sum + xi * y[i], 0);
+                const sumX2 = x.reduce((sum, xi) => sum + xi * xi, 0);
                 
-                // Add quadrant labels - adjusted for mobile
-                const quadrantAnnotations = isMobile ? [
-                    {
-                        x: 20,
-                        y: 75,
-                        text: '<b>LOW RISK<br>HIGH REWARD</b>',
-                        showarrow: false,
-                        font: { size: 10, color: '#5d2137' },
-                        bgcolor: 'rgba(254, 233, 226, 0.8)',
-                        bordercolor: '#5d2137',
-                        borderwidth: 1,
-                        borderpad: 4
+                const slope = (n * sumXY - sumX * sumY) / (n * sumX2 - sumX * sumX);
+                const intercept = (sumY - slope * sumX) / n;
+                
+                const minX = Math.min(...x);
+                const maxX = Math.max(...x);
+                const trendY = [minX, maxX].map(xi => slope * xi + intercept);
+                
+                // Calculate correlation coefficient
+                const meanX = sumX / n;
+                const meanY = sumY / n;
+                const ssX = x.reduce((sum, xi) => sum + Math.pow(xi - meanX, 2), 0);
+                const ssY = y.reduce((sum, yi) => sum + Math.pow(yi - meanY, 2), 0);
+                const ssXY = x.reduce((sum, xi, i) => sum + (xi - meanX) * (y[i] - meanY), 0);
+                const r = ssXY / Math.sqrt(ssX * ssY);
+                
+                traces.push({
+                    x: [minX, maxX],
+                    y: trendY,
+                    mode: 'lines',
+                    name: `Trend (r = ${r.toFixed(3)})`,
+                    line: {
+                        color: '#5d2137',
+                        width: 3,
+                        dash: 'dash'
                     },
-                    {
-                        x: 70,
-                        y: 75,
-                        text: '<b>HIGH RISK<br>HIGH REWARD</b>',
-                        showarrow: false,
-                        font: { size: 10, color: '#ba684e' },
-                        bgcolor: 'rgba(254, 233, 226, 0.8)',
-                        bordercolor: '#ba684e',
-                        borderwidth: 1,
-                        borderpad: 4
-                    },
-                    {
-                        x: 70,
-                        y: 25,
-                        text: '<b>DANGER ZONE</b>',
-                        showarrow: false,
-                        font: { size: 10, color: '#000' },
-                        bgcolor: 'rgba(254, 233, 226, 0.8)',
-                        bordercolor: '#000',
-                        borderwidth: 1,
-                        borderpad: 4
-                    }
-                ] : [
-                    {
-                        x: 20,
-                        y: 75,
-                        text: '<b>LOW RISK<br>HIGH REWARD</b><br>(4 subjects, 6.9%)',
-                        showarrow: false,
-                        font: { size: 12, color: '#5d2137' },
-                        bgcolor: 'rgba(254, 233, 226, 0.8)',
-                        bordercolor: '#5d2137',
-                        borderwidth: 2,
-                        borderpad: 8
-                    },
-                    {
-                        x: 70,
-                        y: 75,
-                        text: '<b>HIGH RISK<br>HIGH REWARD</b><br>(8 subjects, 13.8%)',
-                        showarrow: false,
-                        font: { size: 12, color: '#ba684e' },
-                        bgcolor: 'rgba(254, 233, 226, 0.8)',
-                        bordercolor: '#ba684e',
-                        borderwidth: 2,
-                        borderpad: 8
-                    },
-                    {
-                        x: 20,
-                        y: 25,
-                        text: '<b>LOW RISK<br>LOW REWARD</b><br>(7 subjects, 12.1%)',
-                        showarrow: false,
-                        font: { size: 12, color: '#999' },
-                        bgcolor: 'rgba(254, 233, 226, 0.8)',
-                        bordercolor: '#999',
-                        borderwidth: 2,
-                        borderpad: 8
-                    },
-                    {
-                        x: 70,
-                        y: 25,
-                        text: '<b>DANGER ZONE</b><br>(39 subjects, 67.2%)',
-                        showarrow: false,
-                        font: { size: 12, color: '#000' },
-                        bgcolor: 'rgba(254, 233, 226, 0.8)',
-                        bordercolor: '#000',
-                        borderwidth: 2,
-                        borderpad: 8
-                    }
-                ];
+                    hovertemplate: 'Positive correlation<br>r = ' + r.toFixed(3) + '<extra></extra>'
+                });
                 
                 const layout = {
                     xaxis: {
                         title: {
-                            text: 'Risk Score (0-100) →',
+                            text: 'Grade Spread (Standard Deviation)',
                             font: {
                                 size: isMobile ? 11 : 14,
                                 color: '#5d2137',
@@ -307,12 +210,12 @@
                             }
                         },
                         gridcolor: '#fee9e2',
-                        range: [0, 100],
+                        range: [0.8, 1.6],
                         zeroline: false
                     },
                     yaxis: {
                         title: {
-                            text: 'Reward Score (0-100) →',
+                            text: '% Students Getting Grade 7',
                             font: {
                                 size: isMobile ? 11 : 14,
                                 color: '#5d2137',
@@ -320,18 +223,20 @@
                             }
                         },
                         gridcolor: '#fee9e2',
-                        range: [0, 100],
-                        zeroline: false
+                        range: [-1, 30],
+                        zeroline: true,
+                        zerolinecolor: '#5d2137',
+                        zerolinewidth: 1
                     },
                     hovermode: 'closest',
-                    showlegend: !isMobile,
+                    showlegend: true,
                     legend: {
                         x: 0.02,
                         y: 0.98,
-                        bgcolor: 'rgba(255, 255, 255, 0.9)',
+                        bgcolor: 'rgba(255, 255, 255, 0.8)',
                         bordercolor: '#5d2137',
                         borderwidth: 1,
-                        font: { size: 10 }
+                        font: { size: isMobile ? 10 : 11 }
                     },
                     plot_bgcolor: 'white',
                     paper_bgcolor: 'white',
@@ -341,36 +246,30 @@
                     },
                     margin: isMobile 
                         ? { l: 45, r: 10, t: 20, b: 50 }
-                        : { l: 80, r: 30, t: 30, b: 70 },
-                    shapes: [
-                        // Vertical line at x=40 (risk threshold)
+                        : { l: 70, r: 30, t: 30, b: 60 },
+                    annotations: isMobile ? [] : [
                         {
-                            type: 'line',
-                            x0: 40,
-                            y0: 0,
-                            x1: 40,
-                            y1: 100,
-                            line: {
-                                color: '#5d2137',
-                                width: 2,
-                                dash: 'dot'
-                            }
-                        },
-                        // Horizontal line at y=50 (reward threshold)
-                        {
-                            type: 'line',
-                            x0: 0,
-                            y0: 50,
-                            x1: 100,
-                            y1: 50,
-                            line: {
-                                color: '#5d2137',
-                                width: 2,
-                                dash: 'dot'
-                            }
+                            x: 1.4,
+                            y: 21,
+                            text: 'Subjects with more spread<br>give MORE opportunity for 7s!',
+                            showarrow: true,
+                            arrowhead: 2,
+                            arrowsize: 1,
+                            arrowwidth: 2,
+                            arrowcolor: '#ba684e',
+                            ax: -80,
+                            ay: -50,
+                            font: {
+                                size: 12,
+                                color: '#5d2137'
+                            },
+                            bgcolor: '#fee9e2',
+                            bordercolor: '#ba684e',
+                            borderwidth: 2,
+                            borderpad: 4,
+                            opacity: 0.9
                         }
-                    ],
-                    annotations: [...quadrantAnnotations, ...annotations]
+                    ]
                 };
                 
                 const config = {
@@ -391,7 +290,7 @@
                 console.error('Error loading data:', error);
                 document.getElementById('chart').innerHTML = 
                     '<div style="text-align: center; padding: 50px; color: #ba684e;">' +
-                    '<p>Error loading data. Please ensure ib_risk_reward_analysis.csv is in the same directory.</p>' +
+                    '<p>Error loading data. Please ensure ib_subject_analysis_clean.csv is in the same directory.</p>' +
                     '</div>';
             });
     </script>
