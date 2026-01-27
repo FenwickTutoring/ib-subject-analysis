@@ -1,59 +1,59 @@
 Subject,Level,Subject_Group,Students,Mean_Grade,Std_Deviation,Pct_Grade_1,Pct_Grade_2,Pct_Grade_3,Pct_Grade_4,Pct_Grade_5,Pct_Grade_6,Pct_Grade_7,Pct_No_Grade,Pct_Grade_1_3,Pct_Grade_1_4,Pct_Grade_4_5,Pct_Grade_4_7,Pct_Grade_5_7,Pct_Grade_6_7
-Business Management,HL,Individuals and Societies,24513,5.0,1.2,0.2,1.9,8.6,22.0,33.0,25.9,7.5,0.9,10.7,32.7,55.0,88.4,66.4,33.4
-Business Management,SL,Individuals and Societies,13304,4.9,1.3,0.5,4.1,10.2,19.5,26.4,25.0,11.2,3.1,14.8,34.3,45.9,82.1,62.6,36.2
-Economics,HL,Individuals and Societies,20089,5.2,1.2,0.2,2.1,7.9,17.7,27.6,29.9,14.0,0.7,10.2,27.9,45.3,89.2,71.5,43.9
-Economics,SL,Individuals and Societies,10797,5.0,1.4,0.6,4.4,12.1,18.2,24.0,23.5,14.9,2.1,17.1,35.3,42.2,80.6,62.4,38.4
-Geography,HL,Individuals and Societies,5218,5.3,1.1,0.1,0.6,5.0,14.7,33.1,33.1,13.0,0.4,5.7,20.4,47.8,94.0,79.2,46.1
-Geography,SL,Individuals and Societies,4528,4.9,1.3,0.4,4.2,12.8,17.0,27.5,25.9,9.0,3.3,17.4,34.4,44.5,79.4,62.4,34.9
-Global Politics,HL,Individuals and Societies,6263,5.1,1.0,0.3,1.1,5.0,19.0,37.0,30.3,5.6,1.7,6.4,25.4,56.0,92.0,72.9,35.9
-Global Politics,SL,Individuals and Societies,4111,4.7,1.2,0.2,3.6,11.9,21.8,33.2,17.5,6.4,5.5,15.7,37.5,55.0,79.0,57.1,23.9
-History,HL,Individuals and Societies,37228,4.4,1.2,0.5,5.8,14.2,28.8,30.3,15.2,2.6,2.8,20.5,49.3,59.1,77.1,48.1,17.8
-History,SL,Individuals and Societies,9253,4.7,1.2,0.8,4.6,8.3,24.2,34.6,21.5,3.6,2.5,13.7,37.9,58.8,83.9,59.7,25.1
+Business Management,HL,Individuals and Societies,24513,5.0,1.15,0.2,1.9,8.6,22.0,33.0,25.9,7.5,0.9,10.7,32.7,55.0,88.4,66.4,33.4
+Business Management,SL,Individuals and Societies,13304,4.9,1.33,0.5,4.1,10.2,19.5,26.4,25.0,11.2,3.1,14.8,34.3,45.9,82.1,62.6,36.2
+Economics,HL,Individuals and Societies,20089,5.2,1.24,0.2,2.1,7.9,17.7,27.6,29.9,14.0,0.7,10.2,27.9,45.3,89.2,71.5,43.9
+Economics,SL,Individuals and Societies,10797,5.0,1.41,0.6,4.4,12.1,18.2,24.0,23.5,14.9,2.1,17.1,35.3,42.2,80.6,62.4,38.4
+Geography,HL,Individuals and Societies,5218,5.3,1.08,0.1,0.6,5.0,14.7,33.1,33.1,13.0,0.4,5.7,20.4,47.8,94.0,79.2,46.1
+Geography,SL,Individuals and Societies,4528,4.9,1.32,0.4,4.2,12.8,17.0,27.5,25.9,9.0,3.3,17.4,34.4,44.5,79.4,62.4,34.9
+Global Politics,HL,Individuals and Societies,6263,5.1,1.03,0.3,1.1,5.0,19.0,37.0,30.3,5.6,1.7,6.4,25.4,56.0,92.0,72.9,35.9
+Global Politics,SL,Individuals and Societies,4111,4.7,1.21,0.2,3.6,11.9,21.8,33.2,17.5,6.4,5.5,15.7,37.5,55.0,79.0,57.1,23.9
+History,HL,Individuals and Societies,37228,4.4,1.18,0.5,5.8,14.2,28.8,30.3,15.2,2.6,2.8,20.5,49.3,59.1,77.1,48.1,17.8
+History,SL,Individuals and Societies,9253,4.7,1.18,0.8,4.6,8.3,24.2,34.6,21.5,3.6,2.5,13.7,37.9,58.8,83.9,59.7,25.1
 Psychology,HL,Individuals and Societies,15094,4.8,1.2,0.4,3.1,10.9,22.8,31.4,24.4,5.6,1.5,14.4,37.2,54.2,84.2,61.4,30.0
-Psychology,SL,Individuals and Societies,13565,4.4,1.4,1.1,7.7,15.6,25.0,21.8,19.2,4.3,5.4,24.4,49.4,46.8,71.4,45.3,23.5
-Environmental Systems and Societies,SL,Interdisciplinary,22078,4.3,1.3,1.1,7.1,21.0,25.0,24.6,12.9,5.0,3.3,29.2,54.2,49.6,67.5,42.5,17.9
-Chinese B,HL,Language Acquisition,834,6.0,1.0,0.5,2.4,6.4,12.7,42.7,35.0,0.0,0.4,9.3,22.0,55.4,90.4,77.7,35.0
-Chinese B,SL,Language Acquisition,3068,5.7,1.3,1.1,4.5,14.2,18.2,26.1,34.7,0.0,1.0,19.8,38.0,44.3,79.0,60.8,34.7
+Psychology,SL,Individuals and Societies,13565,4.4,1.35,1.1,7.7,15.6,25.0,21.8,19.2,4.3,5.4,24.4,49.4,46.8,71.4,45.3,23.5
+Environmental Systems and Societies,SL,Interdisciplinary,22078,4.3,1.32,1.1,7.1,21.0,25.0,24.6,12.9,5.0,3.3,29.2,54.2,49.6,67.5,42.5,17.9
+Chinese B,HL,Language Acquisition,834,6.0,1.01,0.5,2.4,6.4,12.7,42.7,35.0,0.0,0.4,9.3,22.0,55.4,90.4,77.7,35.0
+Chinese B,SL,Language Acquisition,3068,5.7,1.26,1.1,4.5,14.2,18.2,26.1,34.7,0.0,1.0,19.8,38.0,44.3,79.0,60.8,34.7
 English B,HL,Language Acquisition,23089,5.6,0.9,0.0,0.1,2.1,8.8,24.6,50.2,13.4,0.7,2.2,11.0,33.4,97.1,88.2,63.6
-English B,SL,Language Acquisition,4648,5.5,1.1,0.0,0.6,4.2,13.6,25.4,39.9,14.4,1.9,4.8,18.4,39.0,93.3,79.7,54.3
-French AB Initio,SL,Language Acquisition,5748,4.7,1.3,0.2,2.7,16.1,24.1,26.2,19.9,9.2,1.6,19.0,43.1,50.3,79.4,55.3,29.1
-French B,HL,Language Acquisition,3715,5.2,1.4,0.6,3.4,10.2,14.6,20.5,30.0,19.5,1.2,14.2,28.8,35.1,84.6,70.0,49.5
-French B,SL,Language Acquisition,12639,5.1,1.2,0.2,1.9,8.7,20.0,30.0,24.6,13.2,1.4,10.8,30.8,50.0,87.8,67.8,37.8
-German B,HL,Language Acquisition,1970,5.6,1.0,0.1,2.8,12.1,27.3,36.8,20.1,0.0,0.9,15.0,42.3,64.1,84.3,56.9,20.1
+English B,SL,Language Acquisition,4648,5.5,1.07,0.0,0.6,4.2,13.6,25.4,39.9,14.4,1.9,4.8,18.4,39.0,93.3,79.7,54.3
+French AB Initio,SL,Language Acquisition,5748,4.7,1.29,0.2,2.7,16.1,24.1,26.2,19.9,9.2,1.6,19.0,43.1,50.3,79.4,55.3,29.1
+French B,HL,Language Acquisition,3715,5.2,1.41,0.6,3.4,10.2,14.6,20.5,30.0,19.5,1.2,14.2,28.8,35.1,84.6,70.0,49.5
+French B,SL,Language Acquisition,12639,5.1,1.23,0.2,1.9,8.7,20.0,30.0,24.6,13.2,1.4,10.8,30.8,50.0,87.8,67.8,37.8
+German B,HL,Language Acquisition,1970,5.6,1.03,0.1,2.8,12.1,27.3,36.8,20.1,0.0,0.9,15.0,42.3,64.1,84.3,56.9,20.1
 German B,SL,Language Acquisition,2276,5.1,1.2,0.9,8.2,22.5,28.1,25.3,14.1,0.0,1.0,31.6,59.7,53.4,67.9,39.4,14.1
 Mandarin AB Initio,SL,Language Acquisition,1435,5.2,1.5,0.2,2.5,14.1,19.1,14.7,21.2,25.7,2.4,16.8,35.9,33.8,80.7,61.6,46.9
-Spanish AB Initio,SL,Language Acquisition,10543,4.9,1.2,0.1,1.9,11.2,23.1,31.1,21.0,10.1,1.5,13.2,36.3,54.2,85.4,62.2,31.1
-Spanish B,HL,Language Acquisition,8520,5.2,1.3,0.4,1.8,8.1,17.9,25.3,28.1,16.0,2.4,10.3,28.2,43.2,87.4,69.4,44.1
-Spanish B,SL,Language Acquisition,22140,4.9,1.2,0.1,1.2,10.1,26.2,30.6,19.8,9.8,2.1,11.4,37.6,56.8,86.5,60.2,29.6
-Chinese A: Language and Literature,HL,Language and Literature,742,5.3,0.9,0.7,13.7,45.6,37.5,2.2,0.0,2.2,0.4,60.0,97.5,39.7,14.4,4.4,85.3
-Chinese A: Language and Literature,SL,Language and Literature,3090,5.4,0.9,0.1,1.7,13.5,38.7,37.9,7.7,0.0,0.4,15.3,54.0,76.6,84.8,45.6,7.7
-English A: Language and Literature,HL,Language and Literature,43338,4.8,1.0,0.0,1.0,8.4,26.3,35.9,21.5,4.1,2.7,9.4,35.7,62.2,87.8,61.5,25.6
-English A: Language and Literature,SL,Language and Literature,31216,4.9,1.0,0.1,1.1,6.5,24.0,35.5,25.5,4.9,2.6,7.7,31.7,59.5,90.7,65.9,30.4
-English A: Literature,HL,Language and Literature,30239,4.6,1.0,0.0,1.6,8.4,37.4,33.4,16.0,1.5,1.8,10.0,47.4,70.8,88.3,50.9,17.5
+Spanish AB Initio,SL,Language Acquisition,10543,4.9,1.21,0.1,1.9,11.2,23.1,31.1,21.0,10.1,1.5,13.2,36.3,54.2,85.4,62.2,31.1
+Spanish B,HL,Language Acquisition,8520,5.2,1.28,0.4,1.8,8.1,17.9,25.3,28.1,16.0,2.4,10.3,28.2,43.2,87.4,69.4,44.1
+Spanish B,SL,Language Acquisition,22140,4.9,1.17,0.1,1.2,10.1,26.2,30.6,19.8,9.8,2.1,11.4,37.6,56.8,86.5,60.2,29.6
+Chinese A: Language and Literature,HL,Language and Literature,742,5.3,0.93,0.7,13.7,45.6,37.5,2.2,0.0,2.2,0.4,60.0,97.5,39.7,14.4,4.4,85.3
+Chinese A: Language and Literature,SL,Language and Literature,3090,5.4,0.88,0.1,1.7,13.5,38.7,37.9,7.7,0.0,0.4,15.3,54.0,76.6,84.8,45.6,7.7
+English A: Language and Literature,HL,Language and Literature,43338,4.8,1.03,0.0,1.0,8.4,26.3,35.9,21.5,4.1,2.7,9.4,35.7,62.2,87.8,61.5,25.6
+English A: Language and Literature,SL,Language and Literature,31216,4.9,1.04,0.1,1.1,6.5,24.0,35.5,25.5,4.9,2.6,7.7,31.7,59.5,90.7,65.9,30.4
+English A: Literature,HL,Language and Literature,30239,4.6,0.96,0.0,1.6,8.4,37.4,33.4,16.0,1.5,1.8,10.0,47.4,70.8,88.3,50.9,17.5
 English A: Literature,SL,Language and Literature,5734,5.1,1.0,0.0,0.4,5.0,19.8,37.9,28.8,7.0,1.1,5.4,25.2,57.7,93.5,73.7,35.8
-French A: Language and Literature,HL,Language and Literature,828,4.8,1.0,0.5,5.7,30.3,40.6,18.0,4.0,0.0,1.0,36.5,77.1,58.6,62.6,22.0,4.0
-French A: Language and Literature,SL,Language and Literature,1006,4.8,1.0,0.7,5.6,29.6,38.7,20.7,3.6,0.0,1.2,35.9,74.6,59.4,63.0,24.3,3.6
-German A: Language and Literature,HL,Language and Literature,507,5.3,0.9,1.6,18.3,39.8,30.6,8.9,0.0,0.0,0.8,59.7,90.3,39.5,79.3,8.9,8.9
-German A: Language and Literature,SL,Language and Literature,746,5.2,0.9,1.7,20.2,42.0,27.2,8.3,0.0,0.0,0.5,63.9,91.1,35.5,77.5,8.3,8.3
-Spanish A: Language and Literature,HL,Language and Literature,5122,4.8,1.0,0.6,7.5,28.3,38.8,20.8,2.7,0.0,1.2,36.4,75.2,59.6,68.1,23.5,2.7
-Spanish A: Language and Literature,SL,Language and Literature,2741,4.8,1.1,1.4,9.2,24.6,35.8,23.0,4.5,0.0,1.5,35.2,71.0,58.8,63.3,27.5,4.5
-Mathematics Analysis and Approaches,HL,Mathematics,24966,4.9,1.4,0.7,5.1,10.8,21.8,23.7,20.3,16.4,1.1,16.6,38.4,45.5,82.1,60.4,36.7
-Mathematics Analysis and Approaches,SL,Mathematics,42358,4.5,1.4,1.3,8.0,15.2,24.7,23.1,16.8,9.2,1.5,24.5,49.2,47.8,73.8,49.1,26.0
-Mathematics Applications and Interpretation,HL,Mathematics,8527,4.5,1.5,1.6,8.1,13.9,25.7,23.7,16.0,9.6,1.4,23.6,49.3,49.4,75.4,49.3,25.6
-Mathematics Applications and Interpretation,SL,Mathematics,42968,3.9,1.5,5.4,14.0,20.0,23.9,18.4,11.1,4.0,3.3,39.4,63.3,42.3,57.4,33.5,15.1
-Biology,HL,Sciences,33102,4.5,1.4,1.0,6.7,18.0,24.8,23.9,16.6,7.2,1.8,25.7,50.5,48.7,72.5,47.7,23.8
-Biology,SL,Sciences,21939,4.3,1.4,0.8,8.7,21.6,26.1,20.6,13.9,5.9,2.4,31.1,57.2,46.7,68.9,40.4,19.8
-Chemistry,HL,Sciences,20095,4.8,1.5,0.7,5.0,15.8,19.4,22.3,20.7,15.0,1.1,21.5,40.9,41.7,77.4,58.0,35.7
-Chemistry,SL,Sciences,17646,4.3,1.5,1.5,11.0,19.1,20.9,20.6,15.3,9.5,2.2,31.6,52.5,41.5,66.3,45.4,24.8
-Computer Science,HL,Sciences,4751,4.7,1.4,0.2,5.9,15.8,20.9,27.0,20.5,8.5,1.2,21.9,42.8,47.9,77.0,56.0,29.0
-Computer Science,SL,Sciences,4402,4.3,1.5,1.5,10.1,21.9,19.7,20.2,15.6,8.5,2.6,33.5,53.2,39.9,64.0,44.3,24.1
-Design Technology,HL,Sciences,2127,4.7,1.1,0.1,2.1,10.1,29.5,30.7,22.2,4.4,0.9,12.3,41.8,60.2,86.8,57.3,26.6
-Physics,HL,Sciences,17984,4.9,1.5,0.3,4.8,15.0,19.8,22.2,17.9,19.2,0.9,20.1,39.9,42.0,79.1,59.3,37.1
+French A: Language and Literature,HL,Language and Literature,828,4.8,0.94,0.5,5.7,30.3,40.6,18.0,4.0,0.0,1.0,36.5,77.1,58.6,62.6,22.0,4.0
+French A: Language and Literature,SL,Language and Literature,1006,4.8,0.96,0.7,5.6,29.6,38.7,20.7,3.6,0.0,1.2,35.9,74.6,59.4,63.0,24.3,3.6
+German A: Language and Literature,HL,Language and Literature,507,5.3,0.91,1.6,18.3,39.8,30.6,8.9,0.0,0.0,0.8,59.7,90.3,39.5,79.3,8.9,8.9
+German A: Language and Literature,SL,Language and Literature,746,5.2,0.91,1.7,20.2,42.0,27.2,8.3,0.0,0.0,0.5,63.9,91.1,35.5,77.5,8.3,8.3
+Spanish A: Language and Literature,HL,Language and Literature,5122,4.8,0.96,0.6,7.5,28.3,38.8,20.8,2.7,0.0,1.2,36.4,75.2,59.6,68.1,23.5,2.7
+Spanish A: Language and Literature,SL,Language and Literature,2741,4.8,1.06,1.4,9.2,24.6,35.8,23.0,4.5,0.0,1.5,35.2,71.0,58.8,63.3,27.5,4.5
+Mathematics Analysis and Approaches,HL,Mathematics,24966,4.9,1.44,0.7,5.1,10.8,21.8,23.7,20.3,16.4,1.1,16.6,38.4,45.5,82.1,60.4,36.7
+Mathematics Analysis and Approaches,SL,Mathematics,42358,4.5,1.44,1.3,8.0,15.2,24.7,23.1,16.8,9.2,1.5,24.5,49.2,47.8,73.8,49.1,26.0
+Mathematics Applications and Interpretation,HL,Mathematics,8527,4.5,1.45,1.6,8.1,13.9,25.7,23.7,16.0,9.6,1.4,23.6,49.3,49.4,75.4,49.3,25.6
+Mathematics Applications and Interpretation,SL,Mathematics,42968,3.9,1.49,5.4,14.0,20.0,23.9,18.4,11.1,4.0,3.3,39.4,63.3,42.3,57.4,33.5,15.1
+Biology,HL,Sciences,33102,4.5,1.38,1.0,6.7,18.0,24.8,23.9,16.6,7.2,1.8,25.7,50.5,48.7,72.5,47.7,23.8
+Biology,SL,Sciences,21939,4.3,1.37,0.8,8.7,21.6,26.1,20.6,13.9,5.9,2.4,31.1,57.2,46.7,68.9,40.4,19.8
+Chemistry,HL,Sciences,20095,4.8,1.47,0.7,5.0,15.8,19.4,22.3,20.7,15.0,1.1,21.5,40.9,41.7,77.4,58.0,35.7
+Chemistry,SL,Sciences,17646,4.3,1.53,1.5,11.0,19.1,20.9,20.6,15.3,9.5,2.2,31.6,52.5,41.5,66.3,45.4,24.8
+Computer Science,HL,Sciences,4751,4.7,1.36,0.2,5.9,15.8,20.9,27.0,20.5,8.5,1.2,21.9,42.8,47.9,77.0,56.0,29.0
+Computer Science,SL,Sciences,4402,4.3,1.51,1.5,10.1,21.9,19.7,20.2,15.6,8.5,2.6,33.5,53.2,39.9,64.0,44.3,24.1
+Design Technology,HL,Sciences,2127,4.7,1.11,0.1,2.1,10.1,29.5,30.7,22.2,4.4,0.9,12.3,41.8,60.2,86.8,57.3,26.6
+Physics,HL,Sciences,17984,4.9,1.49,0.3,4.8,15.0,19.8,22.2,17.9,19.2,0.9,20.1,39.9,42.0,79.1,59.3,37.1
 Physics,SL,Sciences,14442,4.2,1.5,1.3,8.7,25.9,23.0,17.1,11.8,10.3,1.9,35.9,58.9,40.1,62.2,39.2,22.1
-Sports Exercise and Health Science,HL,Sciences,1947,4.8,1.4,0.5,4.3,14.0,23.1,25.0,20.9,10.6,1.6,18.8,41.9,48.1,79.6,56.5,31.5
-Sports Exercise and Health Science,SL,Sciences,5987,3.8,1.4,1.8,14.7,24.7,24.1,16.7,8.4,3.2,6.4,41.2,65.3,40.8,53.3,28.3,11.6
+Sports Exercise and Health Science,HL,Sciences,1947,4.8,1.36,0.5,4.3,14.0,23.1,25.0,20.9,10.6,1.6,18.8,41.9,48.1,79.6,56.5,31.5
+Sports Exercise and Health Science,SL,Sciences,5987,3.8,1.35,1.8,14.7,24.7,24.1,16.7,8.4,3.2,6.4,41.2,65.3,40.8,53.3,28.3,11.6
 Film,HL,The Arts,2962,4.4,1.2,1.0,4.0,14.2,30.5,27.1,14.6,3.7,4.9,19.2,49.7,57.6,75.9,45.4,18.3
-Music,HL,The Arts,1475,4.8,1.2,1.5,11.1,28.1,29.4,20.1,6.4,0.0,3.5,40.7,70.1,49.5,58.0,26.5,6.4
-Theatre,HL,The Arts,2518,5.1,1.2,1.9,8.8,18.9,27.6,26.2,13.9,0.0,2.7,29.6,57.2,53.8,68.8,40.1,13.9
-Visual Arts,HL,The Arts,10312,4.3,1.1,0.4,3.2,22.8,32.1,24.2,11.7,2.6,2.9,26.4,58.5,56.3,70.6,38.5,14.3
+Music,HL,The Arts,1475,4.8,1.13,1.5,11.1,28.1,29.4,20.1,6.4,0.0,3.5,40.7,70.1,49.5,58.0,26.5,6.4
+Theatre,HL,The Arts,2518,5.1,1.24,1.9,8.8,18.9,27.6,26.2,13.9,0.0,2.7,29.6,57.2,53.8,68.8,40.1,13.9
+Visual Arts,HL,The Arts,10312,4.3,1.13,0.4,3.2,22.8,32.1,24.2,11.7,2.6,2.9,26.4,58.5,56.3,70.6,38.5,14.3
 Visual Arts,SL,The Arts,6080,4.0,1.0,0.5,5.3,22.1,43.0,18.5,6.2,0.7,3.7,27.9,70.9,61.5,68.4,25.4,6.9
