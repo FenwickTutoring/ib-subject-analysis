@@ -211,7 +211,8 @@
                         },
                         gridcolor: '#fee9e2',
                         range: [0.8, 1.6],
-                        zeroline: false
+                        zeroline: false,
+                        fixedrange: true
                     },
                     yaxis: {
                         title: {
@@ -226,9 +227,11 @@
                         range: [-1, 30],
                         zeroline: true,
                         zerolinecolor: '#5d2137',
-                        zerolinewidth: 1
+                        zerolinewidth: 1,
+                        fixedrange: true
                     },
                     hovermode: 'closest',
+                    dragmode: false,
                     showlegend: true,
                     legend: {
                         x: 0.02,
@@ -276,7 +279,7 @@
                     responsive: true,
                     displayModeBar: false,
                     displaylogo: false,
-                    staticPlot: true
+                    scrollZoom: false
                 };
                 
                 Plotly.newPlot('chart', traces, layout, config);
