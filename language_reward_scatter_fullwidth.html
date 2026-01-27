@@ -247,7 +247,8 @@
                         },
                         type: 'log',
                         gridcolor: '#fee9e2',
-                        zeroline: false
+                        zeroline: false,
+                        fixedrange: true
                     },
                     yaxis: {
                         title: {
@@ -260,9 +261,11 @@
                         },
                         gridcolor: '#fee9e2',
                         zeroline: false,
-                        range: [5, 52]
+                        range: [5, 52],
+                        fixedrange: true
                     },
                     hovermode: 'closest',
+                    dragmode: false,
                     plot_bgcolor: 'white',
                     paper_bgcolor: 'white',
                     font: {
@@ -334,7 +337,7 @@
                         width: 1400,
                         scale: 2
                     },
-                    staticPlot: true
+                    scrollZoom: false
                 };
                 
                 Plotly.newPlot('chart', [trace], layout, config);
