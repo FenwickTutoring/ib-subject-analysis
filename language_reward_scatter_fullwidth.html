@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Niche Language Exploit | Fenwick Tutoring</title>
+    <script src="https://cdn.plot.ly/plotly-2.27.0.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        html, body {
+            width: 100%;
+            height: 100%;
+            overflow-x: hidden;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background-color: white;
+            color: #000;
+            line-height: 1.6;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: none;
+            margin: 0;
+            background-color: white;
+            padding: 30px 5%;
+        }
+        
+        h1 {
+            color: #5d2137;
+            font-size: clamp(22px, 4vw, 32px);
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+        
+        .subtitle {
+            color: #ba684e;
+            font-size: clamp(14px, 2vw, 18px);
+            margin-bottom: 25px;
+        }
+        
+        .insight-box {
+            background-color: #fee9e2;
+            border-left: 4px solid #ba684e;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 25px 0;
+        }
+        
+        .insight-box h3 {
+            color: #5d2137;
+            font-size: 18px;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .insight-box p {
+            color: #000;
+            font-size: 15px;
+            line-height: 1.6;
+            margin-bottom: 10px;
+        }
+        
+        .insight-box p:last-child {
+            margin-bottom: 0;
+        }
+        
+        .insight-box strong {
+            color: #5d2137;
+        }
+        
+        #chart {
+            width: 100%;
+            height: 600px;
+            margin: 30px 0;
+        }
+        
+        .footer {
+            text-align: center;
+            color: #ba684e;
+            font-size: 13px;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 2px solid #fee9e2;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 15px;
+            margin: 25px 0;
+        }
+        
+        .stat-card {
+            background-color: #fee9e2;
+            border-radius: 8px;
+            padding: 16px;
+            text-align: center;
+        }
+        
+        .stat-card .value {
+            color: #5d2137;
+            font-size: 28px;
+            font-weight: bold;
+        }
+        
+        .stat-card .label {
+            color: #ba684e;
+            font-size: 13px;
+            margin-top: 5px;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px 4%;
+            }
+            
+            #chart {
+                height: 400px;
+            }
+            
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .stat-card .value {
+                font-size: 22px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>The Niche Language Exploit</h1>
+        <p class="subtitle">Analysing the relationship between student numbers and grade outcomes across 97 language and literature IB subjects</p>
+        
+        <div id="chart"></div>
+        
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="value">-0.23</div>
+                <div class="label">Correlation Coefficient</div>
+            </div>
+            <div class="stat-card">
+                <div class="value">1.55</div>
+                <div class="label">Effect Size (Cohen's d)</div>
+            </div>
+            <div class="stat-card">
+                <div class="value">15.0</div>
+                <div class="label">Point Gap (Small vs Large)</div>
+            </div>
+            <div class="stat-card">
+                <div class="value">p = 0.026</div>
+                <div class="label">Statistical Significance</div>
+            </div>
+        </div>
+        
+        <div class="insight-box">
+            <h3>📊 Understanding the Statistics</h3>
+            <p><strong>Correlation Coefficient (-0.23, p = 0.026):</strong> This measures the relationship between two things. A negative number means as one goes up, the other goes down. Here, it shows that as the number of students increases, the reward score decreases. The p-value of 0.026 (less than 0.05) confirms this pattern is statistically significant—meaning it's real, not just random chance.</p>
+            <p><strong>Effect Size (Cohen's d = 1.55):</strong> This measures how <em>big</em> the difference is in practical terms. Values above 0.8 are considered "large" effects. At 1.55, this is a <strong>very large effect</strong>—meaning the advantage of smaller subjects isn't just statistically real, it's also <em>substantial and meaningful</em> for students making subject choices.</p>
+            <p><strong>Point Gap (15.0):</strong> Small subjects (under 100 students) score 15 points higher on average than very large subjects (over 10,000 students). Combined with the large effect size, this represents a major practical difference in grade outcomes.</p>
+        </div>
+        
+        <div class="footer">
+            <p><strong>Fenwick Tutoring</strong> | Data: IB May 2025 Statistical Bulletin</p>
+            <p>Reward Score = (40% × Grade 7%) + (40% × Grade 6-7%) + (20% × Mean Grade)</p>
+        </div>
+    </div>
+    
+    <script>
+        // Load and process the CSV data
+        fetch('./language_lit_reward_analysis.csv')
+            .then(response => response.text())
+            .then(data => {
+                // Parse CSV
+                const rows = data.split('\n').slice(1);
+                const subjects = [];
+                const students = [];
+                const rewardScores = [];
+                const meanGrades = [];
+                const grade7Pct = [];
+                const grade67Pct = [];
+                
+                rows.forEach(row => {
+                    if (row.trim()) {
+                        const cols = row.split(',');
+                        subjects.push(cols[0]);
+                        students.push(parseFloat(cols[1]));
+                        meanGrades.push(parseFloat(cols[2]));
+                        grade7Pct.push(parseFloat(cols[3]));
+                        grade67Pct.push(parseFloat(cols[5]));
+                        rewardScores.push(parseFloat(cols[6]));
+                    }
+                });
+                
+                const colors = students.map(s => {
+                    if (s < 100) return '#5d2137';
+                    if (s < 500) return '#ba684e';
+                    if (s < 2000) return '#d4a574';
+                    if (s < 10000) return '#e8c4a0';
+                    return '#999999';
+                });
+                
+                const sizeLabels = students.map(s => {
+                    if (s < 100) return 'Very Small (<100)';
+                    if (s < 500) return 'Small (100-500)';
+                    if (s < 2000) return 'Medium (500-2000)';
+                    if (s < 10000) return 'Large (2000-10000)';
+                    return 'Very Large (>10000)';
+                });
+                
+                const hoverText = subjects.map((subj, i) => 
+                    `<b>${subj}</b><br>` +
+                    `Students: ${students[i].toLocaleString()}<br>` +
+                    `Reward Score: ${rewardScores[i].toFixed(2)}<br>` +
+                    `Mean Grade: ${meanGrades[i].toFixed(2)}<br>` +
+                    `Grade 7%: ${grade7Pct[i].toFixed(1)}%<br>` +
+                    `Grade 6-7%: ${grade67Pct[i].toFixed(1)}%<br>` +
+                    `Size: ${sizeLabels[i]}`
+                );
+                
+                const trace = {
+                    x: students,
+                    y: rewardScores,
+                    mode: 'markers',
+                    type: 'scatter',
+                    text: hoverText,
+                    hoverinfo: 'text',
+                    marker: {
+                        size: 10,
+                        color: colors,
+                        opacity: 0.7,
+                        line: {
+                            color: '#5d2137',
+                            width: 1
+                        }
+                    },
+                    showlegend: false
+                };
+                
+                const layout = {
+                    xaxis: {
+                        title: {
+                            text: 'Number of Students (log scale)',
+                            font: {
+                                size: 14,
+                                color: '#5d2137',
+                                family: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto'
+                            }
+                        },
+                        type: 'log',
+                        gridcolor: '#fee9e2',
+                        zeroline: false
+                    },
+                    yaxis: {
+                        title: {
+                            text: 'Reward Score',
+                            font: {
+                                size: 14,
+                                color: '#5d2137',
+                                family: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto'
+                            }
+                        },
+                        gridcolor: '#fee9e2',
+                        zeroline: false,
+                        range: [5, 52]
+                    },
+                    hovermode: 'closest',
+                    plot_bgcolor: 'white',
+                    paper_bgcolor: 'white',
+                    font: {
+                        family: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto',
+                        color: '#000'
+                    },
+                    margin: {
+                        l: 60,
+                        r: 30,
+                        t: 30,
+                        b: 60
+                    },
+                    annotations: [
+                        {
+                            x: Math.log10(50),
+                            y: 45,
+                            xref: 'x',
+                            yref: 'y',
+                            text: 'Small cohorts:<br>Higher rewards',
+                            showarrow: true,
+                            arrowhead: 2,
+                            arrowsize: 1,
+                            arrowwidth: 2,
+                            arrowcolor: '#ba684e',
+                            ax: -60,
+                            ay: -60,
+                            font: {
+                                size: 12,
+                                color: '#5d2137'
+                            },
+                            bgcolor: '#fee9e2',
+                            bordercolor: '#ba684e',
+                            borderwidth: 2,
+                            borderpad: 4,
+                            opacity: 0.9
+                        },
+                        {
+                            x: Math.log10(30000),
+                            y: 12,
+                            xref: 'x',
+                            yref: 'y',
+                            text: 'Large cohorts:<br>Lower rewards',
+                            showarrow: true,
+                            arrowhead: 2,
+                            arrowsize: 1,
+                            arrowwidth: 2,
+                            arrowcolor: '#ba684e',
+                            ax: 60,
+                            ay: 60,
+                            font: {
+                                size: 12,
+                                color: '#5d2137'
+                            },
+                            bgcolor: '#fee9e2',
+                            bordercolor: '#ba684e',
+                            borderwidth: 2,
+                            borderpad: 4,
+                            opacity: 0.9
+                        }
+                    ]
+                };
+                
+                const config = {
+                    responsive: true,
+                    displayModeBar: true,
+                    displaylogo: false,
+                    modeBarButtonsToRemove: ['pan2d', 'lasso2d', 'select2d'],
+                    toImageButtonOptions: {
+                        format: 'png',
+                        filename: 'language_reward_scatter_fenwick_tutoring',
+                        height: 800,
+                        width: 1400,
+                        scale: 2
+                    }
+                };
+                
+                Plotly.newPlot('chart', [trace], layout, config);
+                
+                // Force resize after load
+                window.addEventListener('resize', function() {
+                    Plotly.Plots.resize('chart');
+                });
+            })
+            .catch(error => {
+                console.error('Error loading data:', error);
+                document.getElementById('chart').innerHTML = 
+                    '<div style="text-align: center; padding: 50px; color: #ba684e;">' +
+                    '<p>Error loading data. Please ensure language_lit_reward_analysis.csv is in the same directory.</p>' +
+                    '</div>';
+            });
+    </script>
+</body>
+</html>
