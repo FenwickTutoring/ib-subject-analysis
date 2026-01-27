@@ -138,7 +138,7 @@
                 const categoryColors = {
                     'LOW RISK, HIGH REWARD': '#5d2137',
                     'HIGH RISK, HIGH REWARD': '#ba684e',
-                    'LOW RISK, LOW REWARD': '#607D8B',
+                    'LOW RISK, LOW REWARD': '#999999',
                     'HIGH RISK, LOW REWARD': '#000000'
                 };
                 
@@ -308,7 +308,8 @@
                         },
                         gridcolor: '#fee9e2',
                         range: [0, 100],
-                        zeroline: false
+                        zeroline: false,
+                        fixedrange: true
                     },
                     yaxis: {
                         title: {
@@ -321,9 +322,11 @@
                         },
                         gridcolor: '#fee9e2',
                         range: [0, 100],
-                        zeroline: false
+                        zeroline: false,
+                        fixedrange: true
                     },
                     hovermode: 'closest',
+                    dragmode: false,
                     showlegend: !isMobile,
                     legend: {
                         x: 0.02,
@@ -377,7 +380,7 @@
                     responsive: true,
                     displayModeBar: false,
                     displaylogo: false,
-                    staticPlot: true
+                    scrollZoom: false
                 };
                 
                 Plotly.newPlot('chart', traces, layout, config);
