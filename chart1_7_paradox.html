@@ -3,77 +3,85 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The 7 Paradox: Higher Spread = More 7s</title>
+    <title>The 7 Paradox | Fenwick Tutoring</title>
     <script src="https://cdn.plot.ly/plotly-2.27.0.min.js"></script>
     <style>
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+        * {
             margin: 0;
-            padding: 20px;
-            background-color: #fee9e2;
+            padding: 0;
+            box-sizing: border-box;
         }
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
             background-color: white;
-            padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0 4px 6px rgba(93, 33, 55, 0.1);
+            color: #000;
+            line-height: 1.6;
         }
+        
+        .container {
+            width: 100%;
+            max-width: none;
+            margin: 0;
+            background-color: white;
+            padding: 30px 5%;
+        }
+        
         h1 {
             color: #5d2137;
-            font-size: 28px;
-            margin-bottom: 10px;
-            text-align: center;
+            font-size: clamp(22px, 4vw, 32px);
+            margin-bottom: 8px;
+            font-weight: bold;
         }
+        
         .subtitle {
             color: #ba684e;
-            font-size: 16px;
-            text-align: center;
-            margin-bottom: 30px;
+            font-size: clamp(14px, 2vw, 18px);
+            margin-bottom: 25px;
         }
+        
         #chart {
             width: 100%;
             height: 600px;
+            margin: 30px 0;
         }
+        
         .footer {
             text-align: center;
-            color: #666;
-            font-size: 12px;
-            margin-top: 20px;
+            color: #ba684e;
+            font-size: 13px;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 2px solid #fee9e2;
         }
-        .insight-box {
-            background-color: #fee9e2;
-            border-left: 4px solid #5d2137;
-            padding: 15px;
-            margin: 20px 0;
-            border-radius: 4px;
-        }
-        .insight-box h3 {
-            color: #5d2137;
-            margin-top: 0;
-            font-size: 18px;
-        }
-        .insight-box p {
-            color: #333;
-            line-height: 1.6;
-            margin: 0;
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px 4%;
+            }
+            
+            #chart {
+                height: 400px;
+            }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>THE 7 PARADOX: Higher Spread = More 7s</h1>
+        <h1>The 7 Paradox: Higher Spread = More 7s</h1>
         <p class="subtitle">Subjects with more spread out grades give MORE opportunity for 7s</p>
         
         <div id="chart"></div>
         
         <div class="footer">
-            Fenwick Tutoring | Data: IB May 2025 Statistical Bulletin | Hover over points for details
+            <p><strong>Fenwick Tutoring</strong> | Data: IB May 2025 Statistical Bulletin</p>
         </div>
     </div>
 
     <script>
+        // Detect mobile vs desktop
+        const isMobile = window.innerWidth < 768;
+        
         // Load and process the data using relative path
         fetch('./ib_subject_analysis_clean.csv')
             .then(response => response.text())
@@ -95,15 +103,15 @@
                     };
                 });
                 
-                // Define colors for subject groups
+                // Define colors for subject groups using brand colors
                 const colorMap = {
-                    'Language Acquisition': '#4CAF50',
-                    'Individuals and Societies': '#2196F3',
-                    'Language and Literature': '#9C27B0',
-                    'Sciences': '#F44336',
-                    'Mathematics': '#FF9800',
-                    'The Arts': '#E91E63',
-                    'Interdisciplinary': '#607D8B'
+                    'Language Acquisition': '#ba684e',
+                    'Individuals and Societies': '#5d2137',
+                    'Language and Literature': '#ba684e',
+                    'Sciences': '#5d2137',
+                    'Mathematics': '#ba684e',
+                    'The Arts': '#5d2137',
+                    'Interdisciplinary': '#999999'
                 };
                 
                 // Group data by subject group
@@ -119,22 +127,29 @@
                         type: 'scatter',
                         name: group,
                         marker: {
-                            size: groupData.map(d => Math.sqrt(d.students) / 15),
+                            size: isMobile ? 8 : groupData.map(d => Math.sqrt(d.students) / 15),
                             color: colorMap[group],
                             opacity: 0.7,
                             line: {
-                                color: 'white',
+                                color: '#5d2137',
                                 width: 1
                             }
                         },
                         text: groupData.map(d => 
-                            `<b>${d.subject} ${d.level}</b><br>` +
-                            `Grade 7: ${d.pctGrade7.toFixed(1)}%<br>` +
-                            `Std Dev: ${d.stdDev.toFixed(2)}<br>` +
-                            `Mean Grade: ${d.meanGrade.toFixed(1)}<br>` +
-                            `Students: ${d.students.toLocaleString()}`
+                            isMobile 
+                            ? `<b>${d.subject} ${d.level}</b><br>Grade 7: ${d.pctGrade7.toFixed(1)}%<br>Std Dev: ${d.stdDev.toFixed(2)}`
+                            : `<b>${d.subject} ${d.level}</b><br>` +
+                              `Grade 7: ${d.pctGrade7.toFixed(1)}%<br>` +
+                              `Std Dev: ${d.stdDev.toFixed(2)}<br>` +
+                              `Mean Grade: ${d.meanGrade.toFixed(1)}<br>` +
+                              `Students: ${d.students.toLocaleString()}`
                         ),
-                        hovertemplate: '%{text}<extra></extra>'
+                        hovertemplate: '%{text}<extra></extra>',
+                        hoverlabel: {
+                            font: {
+                                size: isMobile ? 11 : 13
+                            }
+                        }
                     };
                 });
                 
@@ -181,18 +196,28 @@
                     xaxis: {
                         title: {
                             text: 'Grade Spread (Standard Deviation)',
-                            font: { size: 14, color: '#5d2137' }
+                            font: {
+                                size: isMobile ? 11 : 14,
+                                color: '#5d2137',
+                                family: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto'
+                            }
                         },
-                        gridcolor: '#f0f0f0',
-                        range: [0.8, 1.6]
+                        gridcolor: '#fee9e2',
+                        range: [0.8, 1.6],
+                        zeroline: false
                     },
                     yaxis: {
                         title: {
                             text: '% Students Getting Grade 7',
-                            font: { size: 14, color: '#5d2137' }
+                            font: {
+                                size: isMobile ? 11 : 14,
+                                color: '#5d2137',
+                                family: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto'
+                            }
                         },
-                        gridcolor: '#f0f0f0',
-                        range: [0, 30]
+                        gridcolor: '#fee9e2',
+                        range: [0, 30],
+                        zeroline: false
                     },
                     hovermode: 'closest',
                     showlegend: true,
@@ -201,50 +226,70 @@
                         y: 0.98,
                         bgcolor: 'rgba(255, 255, 255, 0.8)',
                         bordercolor: '#5d2137',
-                        borderwidth: 1
+                        borderwidth: 1,
+                        font: { size: isMobile ? 10 : 11 }
                     },
                     plot_bgcolor: 'white',
                     paper_bgcolor: 'white',
                     font: {
-                        family: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, sans-serif'
+                        family: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto',
+                        color: '#000'
                     },
-                    margin: { t: 20, r: 20, b: 60, l: 70 },
-                    annotations: [{
-                        x: 1.4,
-                        y: 21,
-                        text: 'Subjects with more spread<br>give MORE opportunity for 7s!',
-                        showarrow: true,
-                        arrowhead: 2,
-                        arrowsize: 1,
-                        arrowwidth: 2,
-                        arrowcolor: '#5d2137',
-                        ax: -80,
-                        ay: -50,
-                        font: {
-                            size: 13,
-                            color: '#5d2137',
-                            family: 'Arial'
-                        },
-                        bgcolor: '#fee9e2',
-                        bordercolor: '#5d2137',
-                        borderwidth: 2,
-                        borderpad: 6
-                    }]
+                    margin: isMobile 
+                        ? { l: 45, r: 10, t: 20, b: 50 }
+                        : { l: 70, r: 30, t: 30, b: 60 },
+                    annotations: isMobile ? [] : [
+                        {
+                            x: 1.4,
+                            y: 21,
+                            text: 'Subjects with more spread<br>give MORE opportunity for 7s!',
+                            showarrow: true,
+                            arrowhead: 2,
+                            arrowsize: 1,
+                            arrowwidth: 2,
+                            arrowcolor: '#ba684e',
+                            ax: -80,
+                            ay: -50,
+                            font: {
+                                size: 12,
+                                color: '#5d2137'
+                            },
+                            bgcolor: '#fee9e2',
+                            bordercolor: '#ba684e',
+                            borderwidth: 2,
+                            borderpad: 4,
+                            opacity: 0.9
+                        }
+                    ]
                 };
                 
                 const config = {
                     responsive: true,
-                    displayModeBar: true,
-                    modeBarButtonsToRemove: ['lasso2d', 'select2d'],
-                    displaylogo: false
+                    displayModeBar: !isMobile,
+                    displaylogo: false,
+                    modeBarButtonsToRemove: ['pan2d', 'lasso2d', 'select2d'],
+                    toImageButtonOptions: {
+                        format: 'png',
+                        filename: '7_paradox_fenwick_tutoring',
+                        height: 800,
+                        width: 1400,
+                        scale: 2
+                    }
                 };
                 
                 Plotly.newPlot('chart', traces, layout, config);
+                
+                // Force resize after load and on window resize
+                window.addEventListener('resize', function() {
+                    Plotly.Plots.resize('chart');
+                });
             })
             .catch(error => {
                 console.error('Error loading data:', error);
                 document.getElementById('chart').innerHTML = 
-                    '<p style="text-align: center; color: #ba684e; padding: 100px;">Error loading chart data. Please ensure the CSV file is in the same directory.</p>';
+                    '<div style="text-align: center; padding: 50px; color: #ba684e;">' +
+                    '<p>Error loading data. Please ensure ib_subject_analysis_clean.csv is in the same directory.</p>' +
+                    '</div>';
             });
     </script>
 </body>
