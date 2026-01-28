@@ -258,6 +258,71 @@
             padding-top: 20px;
             border-top: 2px solid #fee9e2;
         }
+
+        /* NEW STYLES FOR SCROLL PROMPT */
+        .scroll-prompt-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            margin-top: 40px;
+            padding-bottom: 20px;
+            text-align: center;
+        }
+
+        .scroll-text {
+            color: #5d2137;
+            font-weight: bold;
+            font-size: 16px;
+            margin-bottom: 15px;
+            max-width: 80%;
+        }
+
+        .arrow-stack {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: -5px; /* Negative gap to stack them tighter */
+        }
+
+        .animated-arrow {
+            width: 32px;
+            height: 32px;
+            fill: none;
+            stroke: #ba684e;
+            stroke-width: 3;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            animation: arrowMove 2s infinite ease-in-out;
+            opacity: 0;
+        }
+
+        /* Stagger the animation for the three arrows */
+        .animated-arrow:nth-child(1) {
+            animation-delay: 0s;
+        }
+        .animated-arrow:nth-child(2) {
+            animation-delay: 0.2s;
+            margin-top: -15px; /* Visual overlap */
+        }
+        .animated-arrow:nth-child(3) {
+            animation-delay: 0.4s;
+            margin-top: -15px; /* Visual overlap */
+        }
+
+        @keyframes arrowMove {
+            0% {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            50% {
+                opacity: 1;
+            }
+            100% {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+        }
         
         /* Mobile Styles */
         @media (max-width: 768px) {
@@ -311,7 +376,6 @@
         
         <div id="chart"></div>
         
-        <!-- Search Component -->
         <div class="search-container">
             <div class="search-wrapper">
                 <div class="search-icon">
@@ -332,7 +396,6 @@
             <div class="dropdown" id="dropdown"></div>
         </div>
         
-        <!-- Selected Subject Info Card -->
         <div class="selected-info" id="selected-info">
             <div class="info-header">
                 <div class="group-dot" id="info-dot"></div>
@@ -361,6 +424,22 @@
         <div class="footer">
             <p><strong>Fenwick Tutoring</strong> | Data: IB May 2025 Statistical Bulletin</p>
         </div>
+
+        <div class="scroll-prompt-container">
+            <p class="scroll-text">Keep scrolling for more analysis, white space has been left due to formatting issues with Google sites, Google sites sucks!</p>
+            <div class="arrow-stack">
+                <svg class="animated-arrow" viewBox="0 0 24 24">
+                    <path d="M7 13l5 5 5-5M7 6l5 5 5-5"></path>
+                </svg>
+                <svg class="animated-arrow" viewBox="0 0 24 24">
+                    <path d="M7 13l5 5 5-5M7 6l5 5 5-5"></path>
+                </svg>
+                <svg class="animated-arrow" viewBox="0 0 24 24">
+                    <path d="M7 13l5 5 5-5M7 6l5 5 5-5"></path>
+                </svg>
+            </div>
+        </div>
+
     </div>
 
     <script>
