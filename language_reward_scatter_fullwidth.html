@@ -74,7 +74,273 @@
         #chart {
             width: 100%;
             height: 600px;
-            margin: 30px 0;
+            margin: 30px 0 15px 0;
+        }
+        
+        /* Search Container */
+        .search-container {
+            position: relative;
+            width: 100%;
+            max-width: 400px;
+            margin: 0 auto 30px auto;
+        }
+        
+        .search-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+            background: #fee9e2;
+            border: 2px solid #ba684e;
+            border-radius: 8px;
+            overflow: hidden;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+        }
+        
+        .search-wrapper:focus-within {
+            border-color: #5d2137;
+            box-shadow: 0 0 0 3px rgba(93, 33, 55, 0.15);
+        }
+        
+        .search-icon {
+            padding: 0 12px;
+            color: #ba684e;
+            display: flex;
+            align-items: center;
+        }
+        
+        .search-icon svg {
+            width: 18px;
+            height: 18px;
+        }
+        
+        #subject-search {
+            flex: 1;
+            padding: 12px 12px 12px 0;
+            border: none;
+            background: transparent;
+            font-size: 15px;
+            color: #5d2137;
+            outline: none;
+            font-family: inherit;
+        }
+        
+        #subject-search::placeholder {
+            color: #ba684e;
+            opacity: 0.7;
+        }
+        
+        .clear-btn {
+            padding: 8px 12px;
+            background: none;
+            border: none;
+            color: #ba684e;
+            cursor: pointer;
+            font-size: 18px;
+            display: none;
+            transition: color 0.2s ease;
+        }
+        
+        .clear-btn:hover {
+            color: #5d2137;
+        }
+        
+        .clear-btn.visible {
+            display: block;
+        }
+        
+        /* Dropdown */
+        .dropdown {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: white;
+            border: 2px solid #ba684e;
+            border-top: none;
+            border-radius: 0 0 8px 8px;
+            max-height: 250px;
+            overflow-y: auto;
+            z-index: 1000;
+            display: none;
+            box-shadow: 0 4px 12px rgba(93, 33, 55, 0.15);
+        }
+        
+        .dropdown.active {
+            display: block;
+        }
+        
+        .dropdown-item {
+            padding: 12px 16px;
+            cursor: pointer;
+            border-bottom: 1px solid #fee9e2;
+            transition: background-color 0.15s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .dropdown-item:last-child {
+            border-bottom: none;
+        }
+        
+        .dropdown-item:hover,
+        .dropdown-item.highlighted {
+            background-color: #fee9e2;
+        }
+        
+        .dropdown-item .subject-name {
+            flex: 1;
+            color: #5d2137;
+            font-weight: 500;
+        }
+        
+        .dropdown-item .size-badge {
+            font-size: 10px;
+            padding: 2px 6px;
+            border-radius: 3px;
+            color: white;
+            font-weight: 600;
+        }
+        
+        .no-results {
+            padding: 16px;
+            text-align: center;
+            color: #ba684e;
+            font-style: italic;
+        }
+        
+        /* Selected subject info card */
+        .selected-info {
+            display: none;
+            background: linear-gradient(135deg, #fee9e2 0%, #fff 100%);
+            border: 2px solid #ba684e;
+            border-radius: 8px;
+            padding: 16px 20px;
+            margin: 15px auto 25px auto;
+            max-width: 400px;
+            animation: slideIn 0.3s ease;
+        }
+        
+        .selected-info.active {
+            display: block;
+        }
+        
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .selected-info .info-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+        
+        .selected-info .size-badge {
+            font-size: 10px;
+            padding: 3px 8px;
+            border-radius: 4px;
+            color: white;
+            font-weight: 600;
+        }
+        
+        .selected-info .subject-title {
+            color: #5d2137;
+            font-weight: 700;
+            font-size: 17px;
+        }
+        
+        .selected-info .info-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 8px 16px;
+        }
+        
+        .selected-info .info-item {
+            display: flex;
+            justify-content: space-between;
+            font-size: 14px;
+        }
+        
+        .selected-info .info-label {
+            color: #ba684e;
+            font-weight: 500;
+        }
+        
+        .selected-info .info-value {
+            color: #5d2137;
+            font-weight: 600;
+        }
+        
+        /* Scroll prompt */
+        .scroll-prompt-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            margin-top: 40px;
+            padding-bottom: 20px;
+            text-align: center;
+        }
+
+        .scroll-text {
+            color: #5d2137;
+            font-weight: bold;
+            font-size: 16px;
+            margin-bottom: 15px;
+            max-width: 80%;
+        }
+
+        .arrow-stack {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: -5px;
+        }
+
+        .animated-arrow {
+            width: 32px;
+            height: 32px;
+            fill: none;
+            stroke: #ba684e;
+            stroke-width: 3;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            animation: arrowMove 2s infinite ease-in-out;
+            opacity: 0;
+        }
+
+        .animated-arrow:nth-child(1) {
+            animation-delay: 0s;
+        }
+        .animated-arrow:nth-child(2) {
+            animation-delay: 0.2s;
+            margin-top: -15px;
+        }
+        .animated-arrow:nth-child(3) {
+            animation-delay: 0.4s;
+            margin-top: -15px;
+        }
+
+        @keyframes arrowMove {
+            0% {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            50% {
+                opacity: 1;
+            }
+            100% {
+                opacity: 0;
+                transform: translateY(10px);
+            }
         }
         
         .footer {
@@ -138,18 +404,94 @@
         
         <div id="chart"></div>
         
-
-
+        <!-- Search Bar -->
+        <div class="search-container">
+            <div class="search-wrapper">
+                <div class="search-icon">
+                    <svg fill="currentColor" viewBox="0 0 16 16">
+                        <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
+                    </svg>
+                </div>
+                <input 
+                    type="text" 
+                    id="subject-search" 
+                    placeholder="Search for a language..."
+                    autocomplete="off"
+                >
+                <button class="clear-btn" id="clear-search">×</button>
+            </div>
+            <div class="dropdown" id="dropdown"></div>
+        </div>
+        
+        <!-- Selected Subject Info -->
+        <div class="selected-info" id="selected-info">
+            <div class="info-header">
+                <span class="size-badge" id="info-badge"></span>
+                <span class="subject-title" id="info-title"></span>
+            </div>
+            <div class="info-grid">
+                <div class="info-item">
+                    <span class="info-label">Reward Score:</span>
+                    <span class="info-value" id="info-reward"></span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Students:</span>
+                    <span class="info-value" id="info-students"></span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Mean Grade:</span>
+                    <span class="info-value" id="info-mean"></span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Grade 7%:</span>
+                    <span class="info-value" id="info-grade7"></span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Grade 6-7%:</span>
+                    <span class="info-value" id="info-grade67"></span>
+                </div>
+            </div>
+        </div>
         
         <div class="footer">
             <p><strong>Fenwick Tutoring</strong> | Data: IB May 2025 Statistical Bulletin</p>
             <p>Reward Score = (40% × Grade 7%) + (40% × Grade 6-7%) + (20% × Mean Grade)</p>
         </div>
+
+        <div class="scroll-prompt-container">
+            <p class="scroll-text">Keep scrolling for more analysis, white space has been left due to formatting issues with Google sites, Google sites sucks!</p>
+            <div class="arrow-stack">
+                <svg class="animated-arrow" viewBox="0 0 24 24">
+                    <path d="M7 13l5 5 5-5M7 6l5 5 5-5"></path>
+                </svg>
+                <svg class="animated-arrow" viewBox="0 0 24 24">
+                    <path d="M7 13l5 5 5-5M7 6l5 5 5-5"></path>
+                </svg>
+                <svg class="animated-arrow" viewBox="0 0 24 24">
+                    <path d="M7 13l5 5 5-5M7 6l5 5 5-5"></path>
+                </svg>
+            </div>
+        </div>
+
     </div>
     
     <script>
         // Detect mobile vs desktop
         const isMobile = window.innerWidth < 768;
+        
+        // Global variables for search
+        let allSubjects = [];
+        let currentTrace = null;
+        let highlightedIndex = -1;
+        
+        // Size category colors
+        const sizeColors = {
+            'Very Small (<100)': '#5d2137',
+            'Small (100-500)': '#ba684e',
+            'Medium (500-2000)': '#d4a574',
+            'Large (2000-10000)': '#e8c4a0',
+            'Very Large (>10000)': '#999999'
+        };
         
         // Load and process the CSV data
         fetch('./language_lit_reward_analysis.csv')
@@ -176,6 +518,27 @@
                     }
                 });
                 
+                // Store all subjects for search
+                allSubjects = subjects.map((subj, i) => {
+                    const s = students[i];
+                    let sizeLabel;
+                    if (s < 100) sizeLabel = 'Very Small (<100)';
+                    else if (s < 500) sizeLabel = 'Small (100-500)';
+                    else if (s < 2000) sizeLabel = 'Medium (500-2000)';
+                    else if (s < 10000) sizeLabel = 'Large (2000-10000)';
+                    else sizeLabel = 'Very Large (>10000)';
+                    
+                    return {
+                        subject: subj,
+                        students: students[i],
+                        rewardScore: rewardScores[i],
+                        meanGrade: meanGrades[i],
+                        grade7: grade7Pct[i],
+                        grade67: grade67Pct[i],
+                        sizeLabel: sizeLabel
+                    };
+                });
+                
                 const colors = students.map(s => {
                     if (s < 100) return '#5d2137';
                     if (s < 500) return '#ba684e';
@@ -195,12 +558,10 @@
                 // Create hover text - different for mobile vs desktop
                 const hoverText = subjects.map((subj, i) => {
                     if (isMobile) {
-                        // Mobile: Short tooltip
                         return `<b>${subj}</b><br>` +
                                `Reward Score: ${rewardScores[i].toFixed(2)}<br>` +
                                `Students: ${students[i].toLocaleString()}`;
                     } else {
-                        // Desktop: Full tooltip
                         return `<b>${subj}</b><br>` +
                                `Students: ${students[i].toLocaleString()}<br>` +
                                `Reward Score: ${rewardScores[i].toFixed(2)}<br>` +
@@ -234,6 +595,8 @@
                     },
                     showlegend: false
                 };
+                
+                currentTrace = trace;
                 
                 const layout = {
                     xaxis: {
@@ -273,9 +636,9 @@
                         color: '#000'
                     },
                     margin: isMobile 
-                        ? { l: 35, r: 10, t: 20, b: 50 }  // Mobile: tighter margins
-                        : { l: 60, r: 30, t: 30, b: 60 }, // Desktop: comfortable margins
-                    annotations: isMobile ? [] : [  // Hide annotations on mobile
+                        ? { l: 35, r: 10, t: 20, b: 50 }
+                        : { l: 60, r: 30, t: 30, b: 60 },
+                    annotations: isMobile ? [] : [
                         {
                             x: Math.log10(50),
                             y: 45,
@@ -327,7 +690,7 @@
                 
                 const config = {
                     responsive: true,
-                    displayModeBar: !isMobile,  // Hide toolbar on mobile
+                    displayModeBar: !isMobile,
                     displaylogo: false,
                     modeBarButtonsToRemove: ['pan2d', 'lasso2d', 'select2d'],
                     toImageButtonOptions: {
@@ -342,6 +705,9 @@
                 
                 Plotly.newPlot('chart', [trace], layout, config);
                 
+                // Initialize search functionality
+                initializeSearch();
+                
                 // Force resize after load and on window resize
                 window.addEventListener('resize', function() {
                     Plotly.Plots.resize('chart');
@@ -354,6 +720,296 @@
                     '<p>Error loading data. Please ensure language_lit_reward_analysis.csv is in the same directory.</p>' +
                     '</div>';
             });
+        
+        function initializeSearch() {
+            const searchInput = document.getElementById('subject-search');
+            const dropdown = document.getElementById('dropdown');
+            const clearBtn = document.getElementById('clear-search');
+            
+            // Input handler
+            searchInput.addEventListener('input', function() {
+                const query = this.value.trim().toLowerCase();
+                highlightedIndex = -1;
+                
+                if (query.length === 0) {
+                    dropdown.classList.remove('active');
+                    clearBtn.classList.remove('visible');
+                    return;
+                }
+                
+                clearBtn.classList.add('visible');
+                
+                const matches = allSubjects.filter(s => 
+                    s.subject.toLowerCase().includes(query)
+                );
+                
+                renderDropdown(matches);
+            });
+            
+            // Keyboard navigation
+            searchInput.addEventListener('keydown', function(e) {
+                const items = dropdown.querySelectorAll('.dropdown-item');
+                
+                if (e.key === 'ArrowDown') {
+                    e.preventDefault();
+                    highlightedIndex = Math.min(highlightedIndex + 1, items.length - 1);
+                    updateHighlight(items);
+                } else if (e.key === 'ArrowUp') {
+                    e.preventDefault();
+                    highlightedIndex = Math.max(highlightedIndex - 1, 0);
+                    updateHighlight(items);
+                } else if (e.key === 'Enter' && highlightedIndex >= 0 && items[highlightedIndex]) {
+                    e.preventDefault();
+                    selectSubject(items[highlightedIndex].dataset.name);
+                }
+            });
+            
+            // Clear button
+            clearBtn.addEventListener('click', function() {
+                searchInput.value = '';
+                clearBtn.classList.remove('visible');
+                dropdown.classList.remove('active');
+                resetChartHighlight();
+                document.getElementById('selected-info').classList.remove('active');
+                searchInput.focus();
+            });
+            
+            // Click outside to close
+            document.addEventListener('click', function(e) {
+                if (!e.target.closest('.search-container')) {
+                    dropdown.classList.remove('active');
+                }
+            });
+        }
+        
+        function renderDropdown(matches) {
+            const dropdown = document.getElementById('dropdown');
+            
+            if (matches.length === 0) {
+                dropdown.innerHTML = '<div class="no-results">No languages found</div>';
+                dropdown.classList.add('active');
+                return;
+            }
+            
+            dropdown.innerHTML = matches.map((s, index) => {
+                const badgeColor = sizeColors[s.sizeLabel];
+                
+                return `
+                    <div class="dropdown-item" data-name="${s.subject}" data-index="${index}">
+                        <span class="size-badge" style="background-color: ${badgeColor}">${s.sizeLabel}</span>
+                        <span class="subject-name">${s.subject}</span>
+                    </div>
+                `;
+            }).join('');
+            
+            // Add click handlers
+            dropdown.querySelectorAll('.dropdown-item').forEach(item => {
+                item.addEventListener('click', function() {
+                    selectSubject(this.dataset.name);
+                });
+            });
+            
+            dropdown.classList.add('active');
+        }
+        
+        function updateHighlight(items) {
+            items.forEach((item, index) => {
+                item.classList.toggle('highlighted', index === highlightedIndex);
+            });
+            
+            // Scroll into view if needed
+            if (highlightedIndex >= 0 && items[highlightedIndex]) {
+                items[highlightedIndex].scrollIntoView({ block: 'nearest' });
+            }
+        }
+        
+        function selectSubject(subjectName) {
+            const searchInput = document.getElementById('subject-search');
+            const dropdown = document.getElementById('dropdown');
+            const clearBtn = document.getElementById('clear-search');
+            
+            // Update input
+            searchInput.value = subjectName;
+            clearBtn.classList.add('visible');
+            dropdown.classList.remove('active');
+            
+            // Find subject data
+            const subject = allSubjects.find(s => s.subject === subjectName);
+            if (subject) {
+                highlightSubjectOnChart(subject);
+                showSelectedInfo(subject);
+            }
+        }
+        
+        function highlightSubjectOnChart(subject) {
+            const pointIndex = allSubjects.findIndex(s => s.subject === subject.subject);
+            
+            if (pointIndex === -1) return;
+            
+            // Create annotation for the selected point
+            const annotations = isMobile ? [] : [
+                {
+                    x: Math.log10(50),
+                    y: 45,
+                    xref: 'x',
+                    yref: 'y',
+                    text: 'Small cohorts:<br>Higher rewards',
+                    showarrow: true,
+                    arrowhead: 2,
+                    arrowsize: 1,
+                    arrowwidth: 2,
+                    arrowcolor: '#ba684e',
+                    ax: -60,
+                    ay: -60,
+                    font: { size: 12, color: '#5d2137' },
+                    bgcolor: '#fee9e2',
+                    bordercolor: '#ba684e',
+                    borderwidth: 2,
+                    borderpad: 4,
+                    opacity: 0.9
+                },
+                {
+                    x: Math.log10(30000),
+                    y: 12,
+                    xref: 'x',
+                    yref: 'y',
+                    text: 'Large cohorts:<br>Lower rewards',
+                    showarrow: true,
+                    arrowhead: 2,
+                    arrowsize: 1,
+                    arrowwidth: 2,
+                    arrowcolor: '#ba684e',
+                    ax: 60,
+                    ay: 60,
+                    font: { size: 12, color: '#5d2137' },
+                    bgcolor: '#fee9e2',
+                    bordercolor: '#ba684e',
+                    borderwidth: 2,
+                    borderpad: 4,
+                    opacity: 0.9
+                }
+            ];
+            
+            // Add highlight annotation
+            annotations.push({
+                x: Math.log10(subject.students),
+                y: subject.rewardScore,
+                text: `<b>${subject.subject}</b><br>Reward: ${subject.rewardScore.toFixed(1)}`,
+                showarrow: true,
+                arrowhead: 2,
+                arrowsize: 1,
+                arrowwidth: 2,
+                arrowcolor: '#5d2137',
+                ax: isMobile ? 0 : 60,
+                ay: isMobile ? -50 : -40,
+                font: { size: isMobile ? 11 : 13, color: '#fff' },
+                bgcolor: '#5d2137',
+                bordercolor: '#5d2137',
+                borderwidth: 2,
+                borderpad: 6,
+                opacity: 1
+            });
+            
+            Plotly.relayout('chart', { annotations: annotations });
+            
+            // Dim other points and highlight the selected one
+            const sizes = allSubjects.map((s, i) => {
+                const baseSize = isMobile ? 8 : 10;
+                return i === pointIndex ? (isMobile ? 16 : baseSize * 2) : baseSize;
+            });
+            
+            const opacities = allSubjects.map((s, i) => 
+                i === pointIndex ? 1 : 0.25
+            );
+            
+            const lineWidths = allSubjects.map((s, i) => 
+                i === pointIndex ? 3 : 1
+            );
+            
+            Plotly.restyle('chart', {
+                'marker.size': [sizes],
+                'marker.opacity': [opacities],
+                'marker.line.width': [lineWidths]
+            }, [0]);
+        }
+        
+        function resetChartHighlight() {
+            // Restore original annotations
+            const annotations = isMobile ? [] : [
+                {
+                    x: Math.log10(50),
+                    y: 45,
+                    xref: 'x',
+                    yref: 'y',
+                    text: 'Small cohorts:<br>Higher rewards',
+                    showarrow: true,
+                    arrowhead: 2,
+                    arrowsize: 1,
+                    arrowwidth: 2,
+                    arrowcolor: '#ba684e',
+                    ax: -60,
+                    ay: -60,
+                    font: { size: 12, color: '#5d2137' },
+                    bgcolor: '#fee9e2',
+                    bordercolor: '#ba684e',
+                    borderwidth: 2,
+                    borderpad: 4,
+                    opacity: 0.9
+                },
+                {
+                    x: Math.log10(30000),
+                    y: 12,
+                    xref: 'x',
+                    yref: 'y',
+                    text: 'Large cohorts:<br>Lower rewards',
+                    showarrow: true,
+                    arrowhead: 2,
+                    arrowsize: 1,
+                    arrowwidth: 2,
+                    arrowcolor: '#ba684e',
+                    ax: 60,
+                    ay: 60,
+                    font: { size: 12, color: '#5d2137' },
+                    bgcolor: '#fee9e2',
+                    bordercolor: '#ba684e',
+                    borderwidth: 2,
+                    borderpad: 4,
+                    opacity: 0.9
+                }
+            ];
+            
+            Plotly.relayout('chart', { annotations: annotations });
+            
+            // Restore original marker styles
+            const baseSize = isMobile ? 8 : 10;
+            Plotly.restyle('chart', {
+                'marker.size': [baseSize],
+                'marker.opacity': [0.7],
+                'marker.line.width': [1]
+            }, [0]);
+        }
+        
+        function showSelectedInfo(subject) {
+            const infoCard = document.getElementById('selected-info');
+            const badge = document.getElementById('info-badge');
+            const title = document.getElementById('info-title');
+            const reward = document.getElementById('info-reward');
+            const students = document.getElementById('info-students');
+            const mean = document.getElementById('info-mean');
+            const grade7 = document.getElementById('info-grade7');
+            const grade67 = document.getElementById('info-grade67');
+            
+            badge.style.backgroundColor = sizeColors[subject.sizeLabel];
+            badge.textContent = subject.sizeLabel;
+            title.textContent = subject.subject;
+            reward.textContent = subject.rewardScore.toFixed(2);
+            students.textContent = subject.students.toLocaleString();
+            mean.textContent = subject.meanGrade.toFixed(1);
+            grade7.textContent = subject.grade7.toFixed(1) + '%';
+            grade67.textContent = subject.grade67.toFixed(1) + '%';
+            
+            infoCard.classList.add('active');
+        }
     </script>
 </body>
 </html>
