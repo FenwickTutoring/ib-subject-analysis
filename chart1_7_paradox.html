@@ -1,11 +1,52 @@
-#chart {
-width: 100%;
-height: 500px;
-            margin: 30px 0;
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The 7 Paradox | Fenwick Tutoring</title>
+    <script src="https://cdn.plot.ly/plotly-2.27.0.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background-color: white;
+            color: #000;
+            line-height: 1.6;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: none;
+            margin: 0;
+            background-color: white;
+            padding: 30px 5%;
+        }
+        
+        h1 {
+            color: #5d2137;
+            font-size: clamp(22px, 4vw, 32px);
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+        
+        .subtitle {
+            color: #ba684e;
+            font-size: clamp(14px, 2vw, 18px);
+            margin-bottom: 25px;
+        }
+        
+        #chart {
+            width: 100%;
+            height: 500px;
             margin: 30px 0 15px 0;
-overflow: visible;
-}
-
+            overflow: visible;
+        }
+        
         /* Search Container */
         .search-container {
             position: relative;
@@ -209,21 +250,24 @@ overflow: visible;
             font-weight: 600;
         }
         
-.footer {
-text-align: center;
-color: #ba684e;
-@@ -56,6 +259,7 @@
-border-top: 2px solid #fee9e2;
-}
-
+        .footer {
+            text-align: center;
+            color: #ba684e;
+            font-size: 13px;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 2px solid #fee9e2;
+        }
+        
         /* Mobile Styles */
-@media (max-width: 768px) {
-.container {
-padding: 20px 4%;
-@@ -64,6 +268,33 @@
-#chart {
-height: 350px;
-}
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px 4%;
+            }
+            
+            #chart {
+                height: 350px;
+            }
             
             .search-container {
                 max-width: 100%;
@@ -251,13 +295,22 @@ height: 350px;
                 grid-template-columns: 1fr;
                 gap: 6px;
             }
-}
-
-@media (min-width: 1200px) {
-@@ -80,6 +311,53 @@ <h1>The 7 Paradox: Higher Spread = More 7s</h1>
-
-<div id="chart"></div>
-
+        }
+        
+        @media (min-width: 1200px) {
+            #chart {
+                height: 550px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>The 7 Paradox: Higher Spread = More 7s</h1>
+        <p class="subtitle">Subjects with more spread out grades give MORE opportunity for 7s</p>
+        
+        <div id="chart"></div>
+        
         <!-- Search Component -->
         <div class="search-container">
             <div class="search-wrapper">
@@ -305,14 +358,15 @@ height: 350px;
             </div>
         </div>
         
-<div class="footer">
-<p><strong>Fenwick Tutoring</strong> | Data: IB May 2025 Statistical Bulletin</p>
-</div>
-@@ -89,7 +367,24 @@ <h1>The 7 Paradox: Higher Spread = More 7s</h1>
-// Detect mobile vs desktop
-const isMobile = window.innerWidth < 768;
+        <div class="footer">
+            <p><strong>Fenwick Tutoring</strong> | Data: IB May 2025 Statistical Bulletin</p>
+        </div>
+    </div>
 
-        // Load and process the data using relative path
+    <script>
+        // Detect mobile vs desktop
+        const isMobile = window.innerWidth < 768;
+        
         // Global variables for search functionality
         let allSubjects = [];
         let currentTraces = [];
@@ -331,94 +385,213 @@ const isMobile = window.innerWidth < 768;
         };
         
         // Load and process the data
-fetch('./ib_subject_analysis_clean.csv')
-.then(response => response.text())
-.then(csvData => {
-@@ -110,16 +405,12 @@ <h1>The 7 Paradox: Higher Spread = More 7s</h1>
-};
-});
-
-                // Define colors for subject groups using distinct, easily distinguishable colors
-                const colorMap = {
-                    'Language Acquisition': '#2196F3',      // Blue
-                    'Individuals and Societies': '#4CAF50', // Green
-                    'Language and Literature': '#9C27B0',   // Purple
-                    'Sciences': '#F44336',                  // Red
-                    'Mathematics': '#FF9800',               // Orange
-                    'The Arts': '#E91E63',                  // Pink
-                    'Interdisciplinary': '#607D8B'          // Blue Grey
-                };
+        fetch('./ib_subject_analysis_clean.csv')
+            .then(response => response.text())
+            .then(csvData => {
+                const rows = csvData.trim().split('\n');
+                const headers = rows[0].split(',');
+                
+                // Parse CSV data
+                const data = rows.slice(1).map(row => {
+                    const values = row.split(',');
+                    return {
+                        subject: values[0],
+                        level: values[1],
+                        group: values[2],
+                        students: parseInt(values[3]),
+                        meanGrade: parseFloat(values[4]),
+                        stdDev: parseFloat(values[5]),
+                        pctGrade7: parseFloat(values[12])
+                    };
+                });
+                
                 // Store all subjects for search
                 allSubjects = data.map(d => ({
                     ...d,
                     displayName: `${d.subject} ${d.level}`,
                     searchKey: `${d.subject} ${d.level}`.toLowerCase()
                 }));
-
-// Group data by subject group
-const groups = [...new Set(data.map(d => d.group))];
-@@ -156,15 +447,15 @@ <h1>The 7 Paradox: Higher Spread = More 7s</h1>
-font: {
-size: isMobile ? 11 : 13
-}
-                        }
+                
+                // Group data by subject group
+                const groups = [...new Set(data.map(d => d.group))];
+                
+                const traces = groups.map(group => {
+                    const groupData = data.filter(d => d.group === group);
+                    
+                    return {
+                        x: groupData.map(d => d.stdDev),
+                        y: groupData.map(d => d.pctGrade7),
+                        mode: 'markers',
+                        type: 'scatter',
+                        name: group,
+                        marker: {
+                            size: isMobile ? 8 : groupData.map(d => Math.sqrt(d.students) / 15),
+                            color: colorMap[group],
+                            opacity: 0.7,
+                            line: {
+                                color: '#5d2137',
+                                width: 1
+                            }
+                        },
+                        text: groupData.map(d => 
+                            isMobile 
+                            ? `<b>${d.subject} ${d.level}</b><br>Grade 7: ${d.pctGrade7.toFixed(1)}%<br>Std Dev: ${d.stdDev.toFixed(2)}`
+                            : `<b>${d.subject} ${d.level}</b><br>` +
+                              `Grade 7: ${d.pctGrade7.toFixed(1)}%<br>` +
+                              `Std Dev: ${d.stdDev.toFixed(2)}<br>` +
+                              `Mean Grade: ${d.meanGrade.toFixed(1)}<br>` +
+                              `Students: ${d.students.toLocaleString()}`
+                        ),
+                        hovertemplate: '%{text}<extra></extra>',
+                        hoverlabel: {
+                            font: {
+                                size: isMobile ? 11 : 13
+                            }
                         },
                         customdata: groupData.map(d => `${d.subject} ${d.level}`)
-};
-});
-
-// Add trend line
-const x = data.map(d => d.stdDev);
-const y = data.map(d => d.pctGrade7);
-
-                // Calculate simple linear regression
-const n = x.length;
-const sumX = x.reduce((a, b) => a + b, 0);
-const sumY = y.reduce((a, b) => a + b, 0);
-@@ -178,7 +469,6 @@ <h1>The 7 Paradox: Higher Spread = More 7s</h1>
-const maxX = Math.max(...x);
-const trendY = [minX, maxX].map(xi => slope * xi + intercept);
-
-                // Calculate correlation coefficient
-const meanX = sumX / n;
-const meanY = sumY / n;
-const ssX = x.reduce((sum, xi) => sum + Math.pow(xi - meanX, 2), 0);
-@@ -199,6 +489,8 @@ <h1>The 7 Paradox: Higher Spread = More 7s</h1>
-hovertemplate: 'Positive correlation<br>r = ' + r.toFixed(3) + '<extra></extra>'
-});
-
+                    };
+                });
+                
+                // Add trend line
+                const x = data.map(d => d.stdDev);
+                const y = data.map(d => d.pctGrade7);
+                
+                const n = x.length;
+                const sumX = x.reduce((a, b) => a + b, 0);
+                const sumY = y.reduce((a, b) => a + b, 0);
+                const sumXY = x.reduce((sum, xi, i) => sum + xi * y[i], 0);
+                const sumX2 = x.reduce((sum, xi) => sum + xi * xi, 0);
+                
+                const slope = (n * sumXY - sumX * sumY) / (n * sumX2 - sumX * sumX);
+                const intercept = (sumY - slope * sumX) / n;
+                
+                const minX = Math.min(...x);
+                const maxX = Math.max(...x);
+                const trendY = [minX, maxX].map(xi => slope * xi + intercept);
+                
+                const meanX = sumX / n;
+                const meanY = sumY / n;
+                const ssX = x.reduce((sum, xi) => sum + Math.pow(xi - meanX, 2), 0);
+                const ssY = y.reduce((sum, yi) => sum + Math.pow(yi - meanY, 2), 0);
+                const ssXY = x.reduce((sum, xi, i) => sum + (xi - meanX) * (y[i] - meanY), 0);
+                const r = ssXY / Math.sqrt(ssX * ssY);
+                
+                traces.push({
+                    x: [minX, maxX],
+                    y: trendY,
+                    mode: 'lines',
+                    name: `Trend (r = ${r.toFixed(3)})`,
+                    line: {
+                        color: '#5d2137',
+                        width: 3,
+                        dash: 'dash'
+                    },
+                    hovertemplate: 'Positive correlation<br>r = ' + r.toFixed(3) + '<extra></extra>'
+                });
+                
                 currentTraces = traces;
                 
-const layout = {
-xaxis: {
-title: {
-@@ -275,6 +567,8 @@ <h1>The 7 Paradox: Higher Spread = More 7s</h1>
-]
-};
-
+                const layout = {
+                    xaxis: {
+                        title: {
+                            text: 'Grade Spread (Standard Deviation)',
+                            font: {
+                                size: isMobile ? 11 : 14,
+                                color: '#5d2137',
+                                family: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto'
+                            }
+                        },
+                        gridcolor: '#fee9e2',
+                        range: [0.8, 1.6],
+                        zeroline: false,
+                        fixedrange: true
+                    },
+                    yaxis: {
+                        title: {
+                            text: '% Students Getting Grade 7',
+                            font: {
+                                size: isMobile ? 11 : 14,
+                                color: '#5d2137',
+                                family: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto'
+                            }
+                        },
+                        gridcolor: '#fee9e2',
+                        range: [-1, 30],
+                        zeroline: true,
+                        zerolinecolor: '#5d2137',
+                        zerolinewidth: 1,
+                        fixedrange: true
+                    },
+                    hovermode: 'closest',
+                    dragmode: false,
+                    showlegend: true,
+                    legend: {
+                        x: 0.02,
+                        y: 0.98,
+                        bgcolor: 'rgba(255, 255, 255, 0.8)',
+                        bordercolor: '#5d2137',
+                        borderwidth: 1,
+                        font: { size: isMobile ? 10 : 11 }
+                    },
+                    plot_bgcolor: 'white',
+                    paper_bgcolor: 'white',
+                    font: {
+                        family: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto',
+                        color: '#000'
+                    },
+                    margin: isMobile 
+                        ? { l: 45, r: 10, t: 20, b: 50 }
+                        : { l: 70, r: 30, t: 30, b: 60 },
+                    annotations: isMobile ? [] : [
+                        {
+                            x: 1.4,
+                            y: 21,
+                            text: 'Subjects with more spread<br>give MORE opportunity for 7s!',
+                            showarrow: true,
+                            arrowhead: 2,
+                            arrowsize: 1,
+                            arrowwidth: 2,
+                            arrowcolor: '#ba684e',
+                            ax: -80,
+                            ay: -50,
+                            font: {
+                                size: 12,
+                                color: '#5d2137'
+                            },
+                            bgcolor: '#fee9e2',
+                            bordercolor: '#ba684e',
+                            borderwidth: 2,
+                            borderpad: 4,
+                            opacity: 0.9
+                        }
+                    ]
+                };
+                
                 currentLayout = layout;
                 
-const config = {
-responsive: true,
-displayModeBar: false,
-@@ -284,10 +578,12 @@ <h1>The 7 Paradox: Higher Spread = More 7s</h1>
-
-Plotly.newPlot('chart', traces, layout, config);
-
-                // Force resize after load and on window resize
-window.addEventListener('resize', function() {
-Plotly.Plots.resize('chart');
-});
+                const config = {
+                    responsive: true,
+                    displayModeBar: false,
+                    displaylogo: false,
+                    scrollZoom: false
+                };
+                
+                Plotly.newPlot('chart', traces, layout, config);
+                
+                window.addEventListener('resize', function() {
+                    Plotly.Plots.resize('chart');
+                });
                 
                 // Initialize search functionality
                 initializeSearch();
-})
-.catch(error => {
-console.error('Error loading data:', error);
-@@ -296,6 +592,305 @@ <h1>The 7 Paradox: Higher Spread = More 7s</h1>
-'<p>Error loading data. Please ensure ib_subject_analysis_clean.csv is in the same directory.</p>' +
-'</div>';
-});
+            })
+            .catch(error => {
+                console.error('Error loading data:', error);
+                document.getElementById('chart').innerHTML = 
+                    '<div style="text-align: center; padding: 50px; color: #ba684e;">' +
+                    '<p>Error loading data. Please ensure ib_subject_analysis_clean.csv is in the same directory.</p>' +
+                    '</div>';
+            });
         
         // Search functionality
         function initializeSearch() {
@@ -718,6 +891,6 @@ console.error('Error loading data:', error);
             
             infoCard.classList.add('active');
         }
-</script>
+    </script>
 </body>
 </html>
