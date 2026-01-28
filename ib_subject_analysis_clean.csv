@@ -25,18 +25,18 @@ Mandarin AB Initio,SL,Language Acquisition,1435,5.2,1.5,0.2,2.5,14.1,19.1,14.7,2
 Spanish AB Initio,SL,Language Acquisition,10543,4.9,1.21,0.1,1.9,11.2,23.1,31.1,21.0,10.1,1.5,13.2,36.3,54.2,85.4,62.2,31.1
 Spanish B,HL,Language Acquisition,8520,5.2,1.28,0.4,1.8,8.1,17.9,25.3,28.1,16.0,2.4,10.3,28.2,43.2,87.4,69.4,44.1
 Spanish B,SL,Language Acquisition,22140,4.9,1.17,0.1,1.2,10.1,26.2,30.6,19.8,9.8,2.1,11.4,37.6,56.8,86.5,60.2,29.6
-Chinese A: Language and Literature,HL,Language and Literature,742,5.3,0.93,0.7,13.7,45.6,37.5,2.2,0.0,2.2,0.4,60.0,97.5,39.7,14.4,4.4,85.3
+Chinese A: Language and Literature,HL,Language and Literature,742,5.3,0.93,0.0,0.7,13.7,45.6,37.5,2.2,0.0,0.4,60.0,97.5,39.7,14.4,4.4,85.3
 Chinese A: Language and Literature,SL,Language and Literature,3090,5.4,0.88,0.1,1.7,13.5,38.7,37.9,7.7,0.0,0.4,15.3,54.0,76.6,84.8,45.6,7.7
 English A: Language and Literature,HL,Language and Literature,43338,4.8,1.03,0.0,1.0,8.4,26.3,35.9,21.5,4.1,2.7,9.4,35.7,62.2,87.8,61.5,25.6
 English A: Language and Literature,SL,Language and Literature,31216,4.9,1.04,0.1,1.1,6.5,24.0,35.5,25.5,4.9,2.6,7.7,31.7,59.5,90.7,65.9,30.4
 English A: Literature,HL,Language and Literature,30239,4.6,0.96,0.0,1.6,8.4,37.4,33.4,16.0,1.5,1.8,10.0,47.4,70.8,88.3,50.9,17.5
 English A: Literature,SL,Language and Literature,5734,5.1,1.0,0.0,0.4,5.0,19.8,37.9,28.8,7.0,1.1,5.4,25.2,57.7,93.5,73.7,35.8
-French A: Language and Literature,HL,Language and Literature,828,4.8,0.94,0.5,5.7,30.3,40.6,18.0,4.0,0.0,1.0,36.5,77.1,58.6,62.6,22.0,4.0
-French A: Language and Literature,SL,Language and Literature,1006,4.8,0.96,0.7,5.6,29.6,38.7,20.7,3.6,0.0,1.2,35.9,74.6,59.4,63.0,24.3,3.6
-German A: Language and Literature,HL,Language and Literature,507,5.3,0.91,1.6,18.3,39.8,30.6,8.9,0.0,0.0,0.8,59.7,90.3,39.5,79.3,8.9,8.9
-German A: Language and Literature,SL,Language and Literature,746,5.2,0.91,1.7,20.2,42.0,27.2,8.3,0.0,0.0,0.5,63.9,91.1,35.5,77.5,8.3,8.3
-Spanish A: Language and Literature,HL,Language and Literature,5122,4.8,0.96,0.6,7.5,28.3,38.8,20.8,2.7,0.0,1.2,36.4,75.2,59.6,68.1,23.5,2.7
-Spanish A: Language and Literature,SL,Language and Literature,2741,4.8,1.06,1.4,9.2,24.6,35.8,23.0,4.5,0.0,1.5,35.2,71.0,58.8,63.3,27.5,4.5
+French A: Language and Literature,HL,Language and Literature,828,4.8,0.94,0.0,0.5,5.7,30.3,40.6,18.0,4.0,1.0,36.5,77.1,58.6,62.6,22.0,4.0
+French A: Language and Literature,SL,Language and Literature,1006,4.8,0.96,0.0,0.7,5.6,29.6,38.7,20.7,3.6,1.2,35.9,74.6,59.4,63.0,24.3,3.6
+German A: Language and Literature,HL,Language and Literature,507,5.3,0.91,0.0,0.0,1.6,18.3,39.8,30.6,8.9,0.8,59.7,90.3,39.5,79.3,8.9,8.9
+German A: Language and Literature,SL,Language and Literature,746,5.2,0.91,0.0,0.0,1.7,20.2,42.0,27.2,8.3,0.5,63.9,91.1,35.5,77.5,8.3,8.3
+Spanish A: Language and Literature,HL,Language and Literature,5122,4.8,0.96,0.0,0.6,7.5,28.3,38.8,20.8,2.7,1.2,36.4,75.2,59.6,68.1,23.5,2.7
+Spanish A: Language and Literature,SL,Language and Literature,2741,4.8,1.06,0.0,1.4,9.2,24.6,35.8,23.0,4.5,1.5,35.2,71.0,58.8,63.3,27.5,4.5
 Mathematics Analysis and Approaches,HL,Mathematics,24966,4.9,1.44,0.7,5.1,10.8,21.8,23.7,20.3,16.4,1.1,16.6,38.4,45.5,82.1,60.4,36.7
 Mathematics Analysis and Approaches,SL,Mathematics,42358,4.5,1.44,1.3,8.0,15.2,24.7,23.1,16.8,9.2,1.5,24.5,49.2,47.8,73.8,49.1,26.0
 Mathematics Applications and Interpretation,HL,Mathematics,8527,4.5,1.45,1.6,8.1,13.9,25.7,23.7,16.0,9.6,1.4,23.6,49.3,49.4,75.4,49.3,25.6
@@ -53,7 +53,7 @@ Physics,SL,Sciences,14442,4.2,1.5,1.3,8.7,25.9,23.0,17.1,11.8,10.3,1.9,35.9,58.9
 Sports Exercise and Health Science,HL,Sciences,1947,4.8,1.36,0.5,4.3,14.0,23.1,25.0,20.9,10.6,1.6,18.8,41.9,48.1,79.6,56.5,31.5
 Sports Exercise and Health Science,SL,Sciences,5987,3.8,1.35,1.8,14.7,24.7,24.1,16.7,8.4,3.2,6.4,41.2,65.3,40.8,53.3,28.3,11.6
 Film,HL,The Arts,2962,4.4,1.2,1.0,4.0,14.2,30.5,27.1,14.6,3.7,4.9,19.2,49.7,57.6,75.9,45.4,18.3
-Music,HL,The Arts,1475,4.8,1.13,1.5,11.1,28.1,29.4,20.1,6.4,0.0,3.5,40.7,70.1,49.5,58.0,26.5,6.4
-Theatre,HL,The Arts,2518,5.1,1.24,1.9,8.8,18.9,27.6,26.2,13.9,0.0,2.7,29.6,57.2,53.8,68.8,40.1,13.9
+Music,HL,The Arts,1475,4.8,1.13,0.0,1.5,11.1,28.1,29.4,20.1,6.4,3.5,40.7,70.1,49.5,58.0,26.5,6.4
+Theatre,HL,The Arts,2518,5.1,1.24,0.0,1.9,8.8,18.9,27.6,26.2,13.9,2.7,29.6,57.2,53.8,68.8,40.1,13.9
 Visual Arts,HL,The Arts,10312,4.3,1.13,0.4,3.2,22.8,32.1,24.2,11.7,2.6,2.9,26.4,58.5,56.3,70.6,38.5,14.3
 Visual Arts,SL,The Arts,6080,4.0,1.0,0.5,5.3,22.1,43.0,18.5,6.2,0.7,3.7,27.9,70.9,61.5,68.4,25.4,6.9
