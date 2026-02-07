@@ -322,7 +322,7 @@
             }
 
             #chart {
-                height: 380px;
+                height: 280px;
             }
 
             .stats-grid {
@@ -660,8 +660,13 @@
 
                 // Responsive resize: adjust layout based on container width
                 function handleResize() {
-                    const narrow = document.getElementById('chart').offsetWidth < 500;
+                    const chartEl = document.getElementById('chart');
+                    const narrow = chartEl.offsetWidth < 500;
+                    const w = chartEl.offsetWidth;
+                    chartEl.style.height = narrow ? '280px' : '550px';
                     Plotly.relayout('chart', {
+                        width: w,
+                        height: narrow ? 280 : 550,
                         'margin.l': narrow ? 35 : 60,
                         'margin.r': narrow ? 10 : 30,
                         'margin.t': narrow ? 20 : 30,
