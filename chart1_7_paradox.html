@@ -46,6 +46,10 @@
             margin: 30px 0 15px 0;
             overflow: visible;
         }
+
+        #chart, #chart * {
+            touch-action: pan-y !important;
+        }
         
         /* Search Container */
         .search-container {
@@ -259,71 +263,6 @@
             border-top: 2px solid #fee9e2;
         }
 
-        /* NEW STYLES FOR SCROLL PROMPT */
-        .scroll-prompt-container {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            margin-top: 40px;
-            padding-bottom: 20px;
-            text-align: center;
-        }
-
-        .scroll-text {
-            color: #5d2137;
-            font-weight: bold;
-            font-size: 16px;
-            margin-bottom: 15px;
-            max-width: 80%;
-        }
-
-        .arrow-stack {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: -5px; /* Negative gap to stack them tighter */
-        }
-
-        .animated-arrow {
-            width: 32px;
-            height: 32px;
-            fill: none;
-            stroke: #ba684e;
-            stroke-width: 3;
-            stroke-linecap: round;
-            stroke-linejoin: round;
-            animation: arrowMove 2s infinite ease-in-out;
-            opacity: 0;
-        }
-
-        /* Stagger the animation for the three arrows */
-        .animated-arrow:nth-child(1) {
-            animation-delay: 0s;
-        }
-        .animated-arrow:nth-child(2) {
-            animation-delay: 0.2s;
-            margin-top: -15px; /* Visual overlap */
-        }
-        .animated-arrow:nth-child(3) {
-            animation-delay: 0.4s;
-            margin-top: -15px; /* Visual overlap */
-        }
-
-        @keyframes arrowMove {
-            0% {
-                opacity: 0;
-                transform: translateY(-10px);
-            }
-            50% {
-                opacity: 1;
-            }
-            100% {
-                opacity: 0;
-                transform: translateY(10px);
-            }
-        }
-        
         /* Mobile Styles */
         @media (max-width: 768px) {
             .container {
@@ -331,7 +270,7 @@
             }
             
             #chart {
-                height: 350px;
+                height: 400px;
             }
             
             .search-container {
@@ -425,26 +364,11 @@
             <p><strong>Fenwick Tutoring</strong> | Data: IB May 2025 Statistical Bulletin</p>
         </div>
 
-        <div class="scroll-prompt-container">
-            <p class="scroll-text">Keep scrolling for more analysis, white space has been left due to formatting issues with Google sites, Google sites sucks!</p>
-            <div class="arrow-stack">
-                <svg class="animated-arrow" viewBox="0 0 24 24">
-                    <path d="M7 13l5 5 5-5M7 6l5 5 5-5"></path>
-                </svg>
-                <svg class="animated-arrow" viewBox="0 0 24 24">
-                    <path d="M7 13l5 5 5-5M7 6l5 5 5-5"></path>
-                </svg>
-                <svg class="animated-arrow" viewBox="0 0 24 24">
-                    <path d="M7 13l5 5 5-5M7 6l5 5 5-5"></path>
-                </svg>
-            </div>
-        </div>
-
     </div>
 
     <script>
-        // Detect mobile vs desktop
-        const isMobile = window.innerWidth < 768;
+        // Detect mobile vs desktop using container width (works in iframes too)
+        const isMobile = document.querySelector('.container').offsetWidth < 600;
         
         // Global variables for search functionality
         let allSubjects = [];
@@ -603,15 +527,15 @@
                     },
                     hovermode: 'closest',
                     dragmode: false,
-                    showlegend: true,
+                    showlegend: !isMobile,
                     legend: {
                         x: 0.02,
                         y: 0.98,
                         bgcolor: 'rgba(255, 255, 255, 0.8)',
                         bordercolor: '#5d2137',
                         borderwidth: 1,
-                        font: { size: isMobile ? 8 : 11 },
-                        tracegroupgap: isMobile ? 1 : 5,
+                        font: { size: 11 },
+                        tracegroupgap: 5,
                         itemsizing: 'constant'
                     },
                     plot_bgcolor: 'white',
@@ -658,10 +582,33 @@
                 };
                 
                 Plotly.newPlot('chart', traces, layout, config);
-                
-                window.addEventListener('resize', function() {
-                    Plotly.Plots.resize('chart');
-                });
+
+                // Responsive resize: adjust layout based on container width
+                function handleResize() {
+                    const narrow = document.getElementById('chart').offsetWidth < 500;
+                    Plotly.relayout('chart', {
+                        showlegend: !narrow,
+                        'margin.l': narrow ? 45 : 70,
+                        'margin.r': narrow ? 10 : 30,
+                        'margin.t': narrow ? 20 : 30,
+                        'margin.b': narrow ? 50 : 60,
+                        annotations: narrow ? [] : [
+                            {
+                                x: 1.4, y: 21,
+                                text: 'Subjects with more spread<br>give MORE opportunity for 7s!',
+                                showarrow: true, arrowhead: 2, arrowsize: 1,
+                                arrowwidth: 2, arrowcolor: '#ba684e',
+                                ax: -80, ay: -50,
+                                font: { size: 12, color: '#5d2137' },
+                                bgcolor: '#fee9e2', bordercolor: '#ba684e',
+                                borderwidth: 2, borderpad: 4, opacity: 0.9
+                            }
+                        ]
+                    });
+                }
+                window.addEventListener('resize', handleResize);
+                // Run once after initial render to handle narrow containers
+                handleResize();
                 
                 // Initialize search functionality
                 initializeSearch();

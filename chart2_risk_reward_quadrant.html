@@ -46,6 +46,10 @@
             margin: 30px 0 15px 0;
             overflow: visible;
         }
+
+        #chart, #chart * {
+            touch-action: pan-y !important;
+        }
         
         /* Search Container */
         .search-container {
@@ -254,70 +258,6 @@
             font-weight: 600;
         }
         
-        /* Scroll prompt */
-        .scroll-prompt-container {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            margin-top: 40px;
-            padding-bottom: 20px;
-            text-align: center;
-        }
-
-        .scroll-text {
-            color: #5d2137;
-            font-weight: bold;
-            font-size: 16px;
-            margin-bottom: 15px;
-            max-width: 80%;
-        }
-
-        .arrow-stack {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: -5px;
-        }
-
-        .animated-arrow {
-            width: 32px;
-            height: 32px;
-            fill: none;
-            stroke: #ba684e;
-            stroke-width: 3;
-            stroke-linecap: round;
-            stroke-linejoin: round;
-            animation: arrowMove 2s infinite ease-in-out;
-            opacity: 0;
-        }
-
-        .animated-arrow:nth-child(1) {
-            animation-delay: 0s;
-        }
-        .animated-arrow:nth-child(2) {
-            animation-delay: 0.2s;
-            margin-top: -15px;
-        }
-        .animated-arrow:nth-child(3) {
-            animation-delay: 0.4s;
-            margin-top: -15px;
-        }
-
-        @keyframes arrowMove {
-            0% {
-                opacity: 0;
-                transform: translateY(-10px);
-            }
-            50% {
-                opacity: 1;
-            }
-            100% {
-                opacity: 0;
-                transform: translateY(10px);
-            }
-        }
-        
         .footer {
             text-align: center;
             color: #ba684e;
@@ -331,9 +271,36 @@
             .container {
                 padding: 20px 4%;
             }
-            
+
             #chart {
                 height: 400px;
+            }
+
+            #subject-search {
+                font-size: 16px;
+                padding: 14px 12px 14px 0;
+            }
+
+            .search-container {
+                max-width: 100%;
+            }
+
+            .dropdown {
+                max-height: 200px;
+            }
+
+            .dropdown-item {
+                padding: 14px 16px;
+            }
+
+            .selected-info {
+                max-width: 100%;
+                padding: 14px 16px;
+            }
+
+            .selected-info .info-grid {
+                grid-template-columns: 1fr;
+                gap: 6px;
             }
         }
         
@@ -408,26 +375,11 @@
             <p><strong>Fenwick Tutoring</strong> | Data: IB May 2025 Statistical Bulletin</p>
         </div>
 
-        <div class="scroll-prompt-container">
-            <p class="scroll-text">Keep scrolling for more analysis, white space has been left due to formatting issues with Google sites, Google sites sucks!</p>
-            <div class="arrow-stack">
-                <svg class="animated-arrow" viewBox="0 0 24 24">
-                    <path d="M7 13l5 5 5-5M7 6l5 5 5-5"></path>
-                </svg>
-                <svg class="animated-arrow" viewBox="0 0 24 24">
-                    <path d="M7 13l5 5 5-5M7 6l5 5 5-5"></path>
-                </svg>
-                <svg class="animated-arrow" viewBox="0 0 24 24">
-                    <path d="M7 13l5 5 5-5M7 6l5 5 5-5"></path>
-                </svg>
-            </div>
-        </div>
-
     </div>
 
     <script>
-        // Detect mobile vs desktop
-        const isMobile = window.innerWidth < 768;
+        // Detect mobile vs desktop using container width (works in iframes too)
+        const isMobile = document.querySelector('.container').offsetWidth < 600;
         
         // Global variables for search
         let allSubjects = [];
@@ -735,14 +687,83 @@
                 };
                 
                 Plotly.newPlot('chart', traces, layout, config);
-                
+
                 // Initialize search functionality
                 initializeSearch();
-                
-                // Force resize after load and on window resize
-                window.addEventListener('resize', function() {
-                    Plotly.Plots.resize('chart');
-                });
+
+                // Responsive resize: adjust layout based on container width
+                function handleResize() {
+                    const narrow = document.getElementById('chart').offsetWidth < 500;
+                    const quadrantAnnotations = narrow ? [
+                        {
+                            x: 15, y: 85,
+                            text: '<b>LOW RISK<br>HIGH REWARD</b>',
+                            showarrow: false,
+                            font: { size: 9, color: '#5d2137' },
+                            bgcolor: 'rgba(254, 233, 226, 0.85)',
+                            bordercolor: '#5d2137', borderwidth: 1, borderpad: 3
+                        },
+                        {
+                            x: 75, y: 85,
+                            text: '<b>HIGH RISK<br>HIGH REWARD</b>',
+                            showarrow: false,
+                            font: { size: 9, color: '#ba684e' },
+                            bgcolor: 'rgba(254, 233, 226, 0.85)',
+                            bordercolor: '#ba684e', borderwidth: 1, borderpad: 3
+                        },
+                        {
+                            x: 75, y: 15,
+                            text: '<b>DANGER ZONE</b>',
+                            showarrow: false,
+                            font: { size: 9, color: '#000' },
+                            bgcolor: 'rgba(254, 233, 226, 0.85)',
+                            bordercolor: '#000', borderwidth: 1, borderpad: 3
+                        }
+                    ] : [
+                        {
+                            x: 20, y: 75,
+                            text: '<b>LOW RISK<br>HIGH REWARD</b><br>(4 subjects, 6.9%)',
+                            showarrow: false,
+                            font: { size: 12, color: '#5d2137' },
+                            bgcolor: 'rgba(254, 233, 226, 0.8)',
+                            bordercolor: '#5d2137', borderwidth: 2, borderpad: 8
+                        },
+                        {
+                            x: 70, y: 75,
+                            text: '<b>HIGH RISK<br>HIGH REWARD</b><br>(8 subjects, 13.8%)',
+                            showarrow: false,
+                            font: { size: 12, color: '#ba684e' },
+                            bgcolor: 'rgba(254, 233, 226, 0.8)',
+                            bordercolor: '#ba684e', borderwidth: 2, borderpad: 8
+                        },
+                        {
+                            x: 20, y: 25,
+                            text: '<b>LOW RISK<br>LOW REWARD</b><br>(7 subjects, 12.1%)',
+                            showarrow: false,
+                            font: { size: 12, color: '#999' },
+                            bgcolor: 'rgba(254, 233, 226, 0.8)',
+                            bordercolor: '#999', borderwidth: 2, borderpad: 8
+                        },
+                        {
+                            x: 70, y: 25,
+                            text: '<b>DANGER ZONE</b><br>(39 subjects, 67.2%)',
+                            showarrow: false,
+                            font: { size: 12, color: '#000' },
+                            bgcolor: 'rgba(254, 233, 226, 0.8)',
+                            bordercolor: '#000', borderwidth: 2, borderpad: 8
+                        }
+                    ];
+                    Plotly.relayout('chart', {
+                        showlegend: !narrow,
+                        'margin.l': narrow ? 45 : 80,
+                        'margin.r': narrow ? 10 : 30,
+                        'margin.t': narrow ? 20 : 30,
+                        'margin.b': narrow ? 50 : 70,
+                        annotations: quadrantAnnotations
+                    });
+                }
+                window.addEventListener('resize', handleResize);
+                handleResize();
             })
             .catch(error => {
                 console.error('Error loading data:', error);
