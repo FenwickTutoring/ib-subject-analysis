@@ -365,7 +365,7 @@
 <body>
     <div class="container">
         <h1>The Niche Language Exploit</h1>
-        <p class="subtitle">Analysing the relationship between student numbers and grade outcomes across 97 language and literature IB subjects</p>
+        <p class="subtitle">Analysing grade outcomes across 139 IB language subjects — Literature vs Language and Literature</p>
         
         <div id="chart"></div>
         
@@ -429,19 +429,27 @@
         // Detect mobile vs desktop using container width (works in iframes too)
         const isMobile = document.querySelector('.container').offsetWidth < 600;
         
-        // Global variables for search
+        // Global variables for search and chart data
         let allSubjects = [];
         let currentTrace = null;
         let highlightedIndex = -1;
+        let litData = { x: [], y: [], text: [], subjects: [] };
+        let lalData = { x: [], y: [], text: [], subjects: [] };
         
-        // Size category colors
-        const sizeColors = {
-            'Very Small (<100)': '#5d2137',
-            'Small (100-500)': '#ba684e',
-            'Medium (500-2000)': '#d4a574',
-            'Large (2000-10000)': '#e8c4a0',
-            'Very Large (>10000)': '#999999'
+        // Course type colors
+        const typeColors = {
+            'Literature': '#5d2137',
+            'Language and Literature': '#ba684e'
         };
+
+        // Classify subject by course type
+        function getCourseType(subjectName) {
+            const upper = subjectName.toUpperCase();
+            if (upper.includes('LANGUAGE AND LITERATURE') || upper.includes(' LAL ')) {
+                return 'Language and Literature';
+            }
+            return 'Literature';
+        }
         
         // Load and process the CSV data
         fetch('./language_lit_reward_analysis.csv')
@@ -470,14 +478,6 @@
                 
                 // Store all subjects for search
                 allSubjects = subjects.map((subj, i) => {
-                    const s = students[i];
-                    let sizeLabel;
-                    if (s < 100) sizeLabel = 'Very Small (<100)';
-                    else if (s < 500) sizeLabel = 'Small (100-500)';
-                    else if (s < 2000) sizeLabel = 'Medium (500-2000)';
-                    else if (s < 10000) sizeLabel = 'Large (2000-10000)';
-                    else sizeLabel = 'Very Large (>10000)';
-                    
                     return {
                         subject: subj,
                         students: students[i],
@@ -485,68 +485,71 @@
                         meanGrade: meanGrades[i],
                         grade7: grade7Pct[i],
                         grade67: grade67Pct[i],
-                        sizeLabel: sizeLabel
+                        courseType: getCourseType(subj)
                     };
                 });
-                
-                const colors = students.map(s => {
-                    if (s < 100) return '#5d2137';
-                    if (s < 500) return '#ba684e';
-                    if (s < 2000) return '#d4a574';
-                    if (s < 10000) return '#e8c4a0';
-                    return '#999999';
+
+                // Split data into two traces by course type
+                litData = { x: [], y: [], text: [], subjects: [] };
+                lalData = { x: [], y: [], text: [], subjects: [] };
+
+                allSubjects.forEach((subj, i) => {
+                    const bucket = subj.courseType === 'Literature' ? litData : lalData;
+                    bucket.x.push(subj.students);
+                    bucket.y.push(subj.rewardScore);
+                    bucket.subjects.push(subj);
+
+                    const hoverStr = isMobile
+                        ? `<b>${subj.subject}</b><br>` +
+                          `Reward Score: ${subj.rewardScore.toFixed(2)}<br>` +
+                          `Students: ${subj.students.toLocaleString()}`
+                        : `<b>${subj.subject}</b><br>` +
+                          `Students: ${subj.students.toLocaleString()}<br>` +
+                          `Reward Score: ${subj.rewardScore.toFixed(2)}<br>` +
+                          `Mean Grade: ${subj.meanGrade.toFixed(2)}<br>` +
+                          `Grade 7%: ${subj.grade7.toFixed(1)}%<br>` +
+                          `Grade 6-7%: ${subj.grade67.toFixed(1)}%<br>` +
+                          `Type: ${subj.courseType}`;
+                    bucket.text.push(hoverStr);
                 });
                 
-                const sizeLabels = students.map(s => {
-                    if (s < 100) return 'Very Small (<100)';
-                    if (s < 500) return 'Small (100-500)';
-                    if (s < 2000) return 'Medium (500-2000)';
-                    if (s < 10000) return 'Large (2000-10000)';
-                    return 'Very Large (>10000)';
-                });
-                
-                // Create hover text - different for mobile vs desktop
-                const hoverText = subjects.map((subj, i) => {
-                    if (isMobile) {
-                        return `<b>${subj}</b><br>` +
-                               `Reward Score: ${rewardScores[i].toFixed(2)}<br>` +
-                               `Students: ${students[i].toLocaleString()}`;
-                    } else {
-                        return `<b>${subj}</b><br>` +
-                               `Students: ${students[i].toLocaleString()}<br>` +
-                               `Reward Score: ${rewardScores[i].toFixed(2)}<br>` +
-                               `Mean Grade: ${meanGrades[i].toFixed(2)}<br>` +
-                               `Grade 7%: ${grade7Pct[i].toFixed(1)}%<br>` +
-                               `Grade 6-7%: ${grade67Pct[i].toFixed(1)}%<br>` +
-                               `Size: ${sizeLabels[i]}`;
-                    }
-                });
-                
-                const trace = {
-                    x: students,
-                    y: rewardScores,
+                const traceLit = {
+                    x: litData.x,
+                    y: litData.y,
                     mode: 'markers',
                     type: 'scatter',
-                    text: hoverText,
+                    name: 'Literature',
+                    text: litData.text,
                     hoverinfo: 'text',
                     marker: {
                         size: isMobile ? 8 : 10,
-                        color: colors,
+                        color: typeColors['Literature'],
                         opacity: 0.7,
-                        line: {
-                            color: '#5d2137',
-                            width: 1
-                        }
+                        line: { color: '#5d2137', width: 1 }
                     },
-                    hoverlabel: {
-                        font: {
-                            size: isMobile ? 11 : 13
-                        }
-                    },
-                    showlegend: false
+                    hoverlabel: { font: { size: isMobile ? 11 : 13 } },
+                    showlegend: true
                 };
-                
-                currentTrace = trace;
+
+                const traceLal = {
+                    x: lalData.x,
+                    y: lalData.y,
+                    mode: 'markers',
+                    type: 'scatter',
+                    name: 'Language & Literature',
+                    text: lalData.text,
+                    hoverinfo: 'text',
+                    marker: {
+                        size: isMobile ? 8 : 10,
+                        color: typeColors['Language and Literature'],
+                        opacity: 0.7,
+                        line: { color: '#5d2137', width: 1 }
+                    },
+                    hoverlabel: { font: { size: isMobile ? 11 : 13 } },
+                    showlegend: true
+                };
+
+                currentTrace = [traceLit, traceLal];
                 
                 const layout = {
                     xaxis: {
@@ -574,8 +577,19 @@
                         },
                         gridcolor: '#fee9e2',
                         zeroline: false,
-                        range: [5, 52],
+                        range: [5, 78],
                         fixedrange: true
+                    },
+                    showlegend: !isMobile,
+                    legend: {
+                        x: 0.98,
+                        y: 0.98,
+                        xanchor: 'right',
+                        yanchor: 'top',
+                        bgcolor: 'rgba(255,255,255,0.9)',
+                        bordercolor: '#ba684e',
+                        borderwidth: 1,
+                        font: { size: 12, color: '#5d2137' }
                     },
                     hovermode: 'closest',
                     dragmode: false,
@@ -653,7 +667,7 @@
                     scrollZoom: false
                 };
                 
-                Plotly.newPlot('chart', [trace], layout, config);
+                Plotly.newPlot('chart', [traceLit, traceLal], layout, config);
 
                 // Initialize search functionality
                 initializeSearch();
@@ -667,6 +681,7 @@
                     Plotly.relayout('chart', {
                         width: w,
                         height: narrow ? 280 : 550,
+                        showlegend: !narrow,
                         'margin.l': narrow ? 35 : 60,
                         'margin.r': narrow ? 10 : 30,
                         'margin.t': narrow ? 20 : 30,
@@ -779,11 +794,11 @@
             }
             
             dropdown.innerHTML = matches.map((s, index) => {
-                const badgeColor = sizeColors[s.sizeLabel];
-                
+                const badgeColor = typeColors[s.courseType];
+
                 return `
                     <div class="dropdown-item" data-name="${s.subject}" data-index="${index}">
-                        <span class="size-badge" style="background-color: ${badgeColor}">${s.sizeLabel}</span>
+                        <span class="size-badge" style="background-color: ${badgeColor}">${s.courseType}</span>
                         <span class="subject-name">${s.subject}</span>
                     </div>
                 `;
@@ -829,10 +844,6 @@
         }
         
         function highlightSubjectOnChart(subject) {
-            const pointIndex = allSubjects.findIndex(s => s.subject === subject.subject);
-            
-            if (pointIndex === -1) return;
-            
             // Create annotation for the selected point
             const annotations = isMobile ? [] : [
                 {
@@ -876,7 +887,7 @@
                     opacity: 0.9
                 }
             ];
-            
+
             // Add highlight annotation
             annotations.push({
                 x: Math.log10(subject.students),
@@ -896,28 +907,48 @@
                 borderpad: 6,
                 opacity: 1
             });
-            
+
             Plotly.relayout('chart', { annotations: annotations });
-            
-            // Dim other points and highlight the selected one
-            const sizes = allSubjects.map((s, i) => {
-                const baseSize = isMobile ? 8 : 10;
-                return i === pointIndex ? (isMobile ? 16 : baseSize * 2) : baseSize;
-            });
-            
-            const opacities = allSubjects.map((s, i) => 
-                i === pointIndex ? 1 : 0.25
+
+            // Find which trace (0=Literature, 1=Lang&Lit) and point index within that trace
+            const isLit = subject.courseType === 'Literature';
+            const traceIdx = isLit ? 0 : 1;
+            const traceData = isLit ? litData : lalData;
+            const otherTraceData = isLit ? lalData : litData;
+            const otherTraceIdx = isLit ? 1 : 0;
+            const pointIdx = traceData.subjects.findIndex(s => s.subject === subject.subject);
+
+            if (pointIdx === -1) return;
+
+            const baseSize = isMobile ? 8 : 10;
+
+            // Highlight selected point in its trace, dim the rest
+            const sizes = traceData.subjects.map((s, i) =>
+                i === pointIdx ? (isMobile ? 16 : baseSize * 2) : baseSize
             );
-            
-            const lineWidths = allSubjects.map((s, i) => 
-                i === pointIndex ? 3 : 1
+            const opacities = traceData.subjects.map((s, i) =>
+                i === pointIdx ? 1 : 0.25
             );
-            
+            const lineWidths = traceData.subjects.map((s, i) =>
+                i === pointIdx ? 3 : 1
+            );
+
             Plotly.restyle('chart', {
                 'marker.size': [sizes],
                 'marker.opacity': [opacities],
                 'marker.line.width': [lineWidths]
-            }, [0]);
+            }, [traceIdx]);
+
+            // Dim all points in the other trace
+            const otherSizes = otherTraceData.subjects.map(() => baseSize);
+            const otherOpacities = otherTraceData.subjects.map(() => 0.25);
+            const otherLineWidths = otherTraceData.subjects.map(() => 1);
+
+            Plotly.restyle('chart', {
+                'marker.size': [otherSizes],
+                'marker.opacity': [otherOpacities],
+                'marker.line.width': [otherLineWidths]
+            }, [otherTraceIdx]);
         }
         
         function resetChartHighlight() {
@@ -964,16 +995,16 @@
                     opacity: 0.9
                 }
             ];
-            
+
             Plotly.relayout('chart', { annotations: annotations });
-            
-            // Restore original marker styles
+
+            // Restore original marker styles for both traces
             const baseSize = isMobile ? 8 : 10;
             Plotly.restyle('chart', {
                 'marker.size': [baseSize],
                 'marker.opacity': [0.7],
                 'marker.line.width': [1]
-            }, [0]);
+            }, [0, 1]);
         }
         
         function showSelectedInfo(subject) {
@@ -986,8 +1017,8 @@
             const grade7 = document.getElementById('info-grade7');
             const grade67 = document.getElementById('info-grade67');
             
-            badge.style.backgroundColor = sizeColors[subject.sizeLabel];
-            badge.textContent = subject.sizeLabel;
+            badge.style.backgroundColor = typeColors[subject.courseType];
+            badge.textContent = subject.courseType;
             title.textContent = subject.subject;
             reward.textContent = subject.rewardScore.toFixed(2);
             students.textContent = subject.students.toLocaleString();
